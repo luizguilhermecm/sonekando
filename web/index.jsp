@@ -15,9 +15,12 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title> Sonekando </title>
+        
+        <link href="login-box.css" rel="stylesheet" type="text/css" />
     </head>
+
     <body>
-        <h1> Sonekando - Soneke voce tambem </h1>
+        <h2>Sonekando</h2>
         
         <form name="input" method="post" action="Cadastro">
             Nome: <input type="text" name="name" /> <br />
@@ -28,7 +31,6 @@
             <input type="submit" value="Cadastrar" />
             <input type="reset" value="Cancelar" /> 
         </form>
-        
         <br><br>
         <h1> Login</h1>
         <form name="input" method="post" action="Login">
