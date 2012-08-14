@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -41,18 +42,30 @@ public class Login extends HttpServlet {
             existe = _login.LoginDao(_user);
             
             if(existe) out.println("Entrou");
-            else out.println("Nao existe");
+            else {
+                String site = "erroLogin.jsp";
+                response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
+                response.setHeader("Location", site);
+            }
             
-            /* TODO output your page here
+            HttpSession session = request.getSession();
+            session.setAttribute("nome", _user.getEmail());
+
+            String nome = (String) (session.getAttribute("nome"));
+            response.getWriter().println(nome);
+            out.println(session.getId());
+            
+            String soneka = "\"soneka.jsp\"";
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Login</title>");  
+            out.println("<title>Sonekando</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Login at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Tire uma soneka " + _user.getEmail() + " enquanto terminamos aqui :)</h1><br />");
+            out.println("<a href=" + soneka + ">Tirar uma soneka</a>");
             out.println("</body>");
             out.println("</html>");
-             */
+
         } finally {            
             out.close();
         }

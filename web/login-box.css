@@ -11,26 +11,19 @@
    Syntax recommendation http://www.w3.org/TR/REC-CSS2/
 */
 
-#login-box-name {
+#login {
+    float: right;
+}
+
+#cadastro {
     float: left;
-    display: inline;
-    width: 80px;
-    text-align: right;
-    padding: 14px 10px 0 0;
-    margin: 0 0 7px 0;
 }
 
-#login-box h2 {
-    padding: 0;
-    margin: 0;
-    font-family: helvetica;
-    font-size: large;
-    color: blue;
+#form {
+    display: inline-block;
 }
 
-#body {
-    margin-bottom: 20px;
-    margin-left: 20px;
-    margin-right: 20px;
-    margin-top: 60px;
+#erroLogin {
+    float: left;
+    font-size: x-large;
 }

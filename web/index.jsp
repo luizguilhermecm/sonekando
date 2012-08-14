@@ -15,30 +15,41 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title> Sonekando </title>
-        
+
         <link href="login-box.css" rel="stylesheet" type="text/css" />
     </head>
 
     <body>
-        <h2>Sonekando</h2>
-        
-        <form name="input" method="post" action="Cadastro">
-            Nome: <input type="text" name="name" /> <br />
-            Sexo: <input type="radio" name="sex" value="m" /> Masculino
-            <input type="radio" name="sex" value="f" /> Feminino <br />
-            Email: <input type="text" name="email" /> <br />
-            Senha: <input type="text" name="pass" /> <br />
-            <input type="submit" value="Cadastrar" />
-            <input type="reset" value="Cancelar" /> 
-        </form>
-        <br><br>
-        <h1> Login</h1>
-        <form name="input" method="post" action="Login">
-            Email: <input type="text" name="emaillogin" /><br />
-            Senha: <input type="text" name="passlogin"/><br />
-            <input type="submit" value="Logar" />
-            <input type="reset" value="Cancelar" />
-        </form>
+        <div id="cadastro">
+            <h1>Sonekando</h1>
+            <h2>Cadastre-se já! É pago :)</h2>
+            <form name="input" method="post" action="Cadastro">
+                Nome: <input type="text" name="name" size="60"/> <br />
+                Sexo: <input type="radio" name="sex" value="m" /> Masculino
+                <input type="radio" name="sex" value="f" /> Feminino <br />
+                Email: <input type="text" name="email" size="40"/> <br />
+                Senha: <input type="text" name="pass" size="20"/> <br />
+                <input type="submit" value="Cadastrar" />
+                <input type="reset" value="Cancelar" /> 
+            </form>
+        </div>
 
+        <div id="login">
+            <form name="input" method="post" action="Login">
+                <div id="login">
+                    <br>
+                    <input type="submit" value="Logar" />
+                </div>
+                <div id="login">
+                    Senha <br>
+                    <input type="text" name="passlogin" size="20"/>
+                </div>
+                <div id="login">
+                    Email  <br>
+                    <input type="text" name="emaillogin" size="40" />
+                </div>
+
+            </form>
+        </div>
     </body>
 </html>
