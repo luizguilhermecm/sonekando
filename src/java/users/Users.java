@@ -7,6 +7,8 @@ package users;
 /**
  *
  * @author snk
+ * 
+ * Classe Users eh a classe dos senhores usuarios.
  */
 public class Users {
             private int id;

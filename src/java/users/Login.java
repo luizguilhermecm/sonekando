@@ -17,6 +17,15 @@ import javax.servlet.http.HttpSession;
 /**
  *
  * @author snk
+ * Servlet chamada no formulario de Login,
+ * Logica meio deturpada ainda nessa Servlet mas funcionando,
+ * Cria um objeto User e insere os valores do formulario,
+ * Chama a funcao LoginDao(_user) em UserDao para validar os dados,
+ * Se usuario existe cria-se uma sessao para ele com seu email/nome e faz uma
+ * gracinha de soneka e tal
+ * Se usuario nao existe ou errou login, redireciona para pagina de erroLogin.jsp
+ * e la ele se vira nos 30.
+ * 
  */
 public class Login extends HttpServlet {
 

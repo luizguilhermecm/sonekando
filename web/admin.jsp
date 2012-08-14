@@ -2,6 +2,10 @@
     Document   : admin
     Created on : 13/08/2012, 12:07:20
     Author     : snk
+
+Codigo pego em algum lugar na interweb.
+Faz um: SELECT * FROM table;
+Retorna todas as tuplas em uma tabela e lista elas em uma pagina HTML.
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

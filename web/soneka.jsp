@@ -2,6 +2,9 @@
     Document   : soneka
     Created on : 13/08/2012, 21:13:04
     Author     : snk
+
+Pagina que mostra o nome do usuario atribuido na sessão dele quando realizou
+login, apenas para testar a funcionalidade de sessão.
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

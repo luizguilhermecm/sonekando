@@ -11,6 +11,13 @@ import java.sql.*;
 /**
  *
  * @author snk
+ * Classe que manipula o objeto Users e o joga no banco.
+ * Conectar() -> pega um objeto Connection da Factory.
+ * Desconectar() -> fecha a conexão com o banco.
+ * InsertUser(_user) -> faz a persistencia dos dados do objeto _user no banco
+ * LoginDao (_user) -> faz uma busca no banco para validar o login do usuario.
+ * 
+ *
  */
 public class UserDao {
         private Connection conn;

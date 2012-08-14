@@ -2,6 +2,11 @@
     Document   : index
     Created on : 13/08/2012, 12:05:41
     Author     : snk
+
+Index do Sonekando
+Primeiro form eh para cadastro, e chama a Servlet "Cadastro"
+Segundo form eh para login, e chama a Servlet "Login"
+Existe algum css nessa pagina por isso alguns divs.
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

@@ -14,6 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * @author snk
+ * Servlet chamada no formulario de cadastro, 
+ * Essa Servlet cria um objeto Users e insere os dados do formulário no objeto.
+ * NewUser(_user) eh a funcao em Users que faz o meio de campo para insersão no
+ * banco
  */
 public class Cadastro extends HttpServlet {
 
