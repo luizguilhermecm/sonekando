@@ -26,17 +26,18 @@ Existe algum css nessa pagina por isso alguns divs.
 
     <body>
         <%
+            //TODO: procurar maneira mais simples de fazer esse redirecionamento
             String nome = (String) (session.getAttribute("nome"));
-            String logado = "soneka.jsp";
             if (nome != null){
                 response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
-                response.setHeader("Location", logado);
+                response.setHeader("Location", "profile.jsp");
             }
         %>
 
         <div id="cadastro">
             <h1>Sonekando</h1>
             <h2>Cadastre-se já! É pago :)</h2>
+            <!-- TODO: cadastro incompleto, completar formulario    -->
             <form name="input" method="post" action="Cadastro">
                 Nome: <input type="text" name="name" size="60"/> <br />
                 Sexo: <input type="radio" name="sex" value="m" /> Masculino
@@ -49,6 +50,7 @@ Existe algum css nessa pagina por isso alguns divs.
         </div>
         
         <div id="login">
+            <!-- FIX: Tabulacao de email para senha (perdendo muito tempo com isso) -->
             <form name="input" method="post" action="Login">
                 <div id="login">
                     <br>

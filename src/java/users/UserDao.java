@@ -19,6 +19,8 @@ import java.sql.*;
  * 
  *
  */
+
+//TODO: comentar as outras funcoes de UserDao.java
 public class UserDao {
         private Connection conn;
         private PreparedStatement pstm;
@@ -144,37 +146,23 @@ public class UserDao {
             }
         }    
         
-        public ResultSet getAmigosDao (int _uid){
+        public ResultSet getAmigosDao (int _uid) throws Exception {
             ResultSet rs = null;
-            try{
                 Conectar();
                 query = "SELECT ffriend_id FROM friends WHERE fuser_id=? AND faccept = 'true';";
                 pstm = conn.prepareStatement(query);
                 pstm.setInt(1, _uid);
-                
                 rs = pstm.executeQuery();
-                                
                 return rs;
-            } catch (Exception e){
-                return rs;
-            }    
-            
         }
         
-        public ResultSet getPendenciasDao (int _uid){
+        public ResultSet getPendenciasDao (int _uid) throws Exception {
             ResultSet rs = null;
-            try{
                 Conectar();
                 query = "SELECT fid,fuser_id FROM friends WHERE ffriend_id=? AND faccept = 'false';";
                 pstm = conn.prepareStatement(query);
                 pstm.setInt(1, _uid);
-                
                 rs = pstm.executeQuery();
-                                
                 return rs;
-            } catch (Exception e){
-                return rs;
-            }    
-            
-        }
+       }
 }

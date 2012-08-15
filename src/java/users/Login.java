@@ -54,7 +54,6 @@ public class Login extends HttpServlet {
             if(existe){
                 HttpSession session = request.getSession();
                 session.setAttribute("user_id", _login.getIdDao(_user.getEmail()));
-                //session.setAttribute("user", _user);
                 
                 String logar = "profile.jsp";
                 response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);

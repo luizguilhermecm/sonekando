@@ -5,7 +5,6 @@
 --%>
 <!DOCTYPE html>
 
-<%@taglib uri = "http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page language="java" %>
 <%@page import="users.*" %>
@@ -21,29 +20,27 @@
     <body>
         <h1> Bom Dia <% out.print(nome); %> </h1>
         <h2> Meus Amigos: </h2>
-        
         <%
+        //TODO: tornar o nome de cada amigo em um link para seu perfil
+        //TODO: criar a pagina de perfil publico
         ResultSet _fresult = _user.getAmigosDao(user_id);
         while (_fresult.next()){
             out.println("<h1>" + _user.getNomeDao(_fresult.getInt("ffriend_id")) + "</h1>" );
         }
         %>
-
-
-        <hr>
-        <h2> Aceitar Amigos: </h2>
         
+        <hr>
+        
+        <h2> Aceitar Amigos: </h2>
         <%
         ResultSet _presult = _user.getPendenciasDao(user_id);
         while (_presult.next()){
             out.print( _user.getNomeCompletoDao(_presult.getInt("fuser_id")) + "</b>");
-            out.println( "<a href=doAcceptFriend> Aceitar </a> " + "- - -" +
-                         "<a href=doRejectFriend> Rejeitar </a> ");
         }
+        // TODO: colocar botoes aceitar e recusar
         %>
         
         <hr>
         <a href="doLogout">Logout</a>
-
     </body>
 </html>
