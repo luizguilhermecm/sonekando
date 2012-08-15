@@ -2,10 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package users;
-
-import database.*;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -17,17 +13,8 @@ import javax.servlet.http.HttpSession;
 /**
  *
  * @author snk
- * Servlet chamada no formulario de Login,
- * Logica meio deturpada ainda nessa Servlet mas funcionando,
- * Cria um objeto User e insere os valores do formulario,
- * Chama a funcao LoginDao(_user) em UserDao para validar os dados,
- * Se usuario existe cria-se uma sessao para ele com seu email/nome e faz uma
- * gracinha de soneka e tal
- * Se usuario nao existe ou errou login, redireciona para pagina de erroLogin.jsp
- * e la ele se vira nos 30.
- * 
  */
-public class Login extends HttpServlet {
+public class doLogout extends HttpServlet {
 
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -40,37 +27,18 @@ public class Login extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        loop:
         try {
-            
-            Users _user = new Users();
-            _user.setEmail(request.getParameter("emaillogin"));
-            _user.setPass(request.getParameter("passlogin"));
-
-            UserDao _login = new UserDao();
-            boolean existe;
-            existe = _login.LoginDao(_user);
-            
-            if(existe){
                 HttpSession session = request.getSession();
-                session.setAttribute("user_id", _login.getIdDao(_user.getEmail()));
-                //session.setAttribute("user", _user);
-                
-                String logar = "profile.jsp";
+                session.invalidate();
+                String site = "index.jsp";
                 response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
-                response.setHeader("Location", logar);
-            } else {
-                String error = "erroLogin.jsp";
-                response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
-                response.setHeader("Location", error);
-            }               
-
+                response.setHeader("Location", site);
         } finally {            
             out.close();
         }
     }
-    
-        // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
      * Handles the HTTP <code>GET</code> method.
      * @param request servlet request

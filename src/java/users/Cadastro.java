@@ -40,6 +40,8 @@ public class Cadastro extends HttpServlet {
             _user.setEmail(request.getParameter("email"));
             _user.setPass(request.getParameter("pass"));
 
+            // TODO: retornar o id do usuario quando inserir e salvar
+            
             _user.NewUser(_user);
 
         } finally {

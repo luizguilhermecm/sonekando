@@ -25,6 +25,15 @@ Existe algum css nessa pagina por isso alguns divs.
     </head>
 
     <body>
+        <%
+            String nome = (String) (session.getAttribute("nome"));
+            String logado = "soneka.jsp";
+            if (nome != null){
+                response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
+                response.setHeader("Location", logado);
+            }
+        %>
+
         <div id="cadastro">
             <h1>Sonekando</h1>
             <h2>Cadastre-se já! É pago :)</h2>
@@ -38,7 +47,7 @@ Existe algum css nessa pagina por isso alguns divs.
                 <input type="reset" value="Cancelar" /> 
             </form>
         </div>
-
+        
         <div id="login">
             <form name="input" method="post" action="Login">
                 <div id="login">

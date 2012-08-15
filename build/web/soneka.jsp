@@ -16,10 +16,12 @@ login, apenas para testar a funcionalidade de sessão.
     </head>
     <body>
         <%
-            String nome = (String) (session.getAttribute("nome"));
-            response.getWriter().println(nome);
-            out.println(session.getId());
+            int id = Integer.parseInt(session.getAttribute("user_id").toString());
+            response.getWriter().println(id);
         %>
         <h1>Nos vemos depois!</h1>
+        <br>
+        
+        <a href="doLogout">Logout</a>
     </body>
 </html>

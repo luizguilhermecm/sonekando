@@ -9,6 +9,8 @@ O submit do form chama a Servlet "Login" assim como a index.
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%@page language="java" %>
+<%@page import="users.*" %>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -17,14 +19,22 @@ O submit do form chama a Servlet "Login" assim como a index.
 
     </head>
     <body>
-            <h1>Sonekando</h1>
-            <h2>Acorda e Tente outra vez.</h2>
-      
-            <form name="input" method="post" action="Login">
-                Email: <input type="text" name="email" size="100"/> <br />
-                Senha: <input type="text" name="pass" size="50"/> <br />
-                <input type="submit" value="Login" />
-                <input type="reset" value="Cancelar" /> 
-            </form>
+        <%
+        String nome = (String) (session.getAttribute("nome"));
+        String logado = "soneka.jsp";
+        if (nome != null){
+        response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
+        response.setHeader("Location", logado);
+        }
+        %>
+        <h1>Sonekando</h1>
+        <h2>Acorda e Tente outra vez.</h2>
+
+        <form name="input" method="post" action="Login">
+            Email: <input type="text" name="emaillogin" size="100"/> <br />
+            Senha: <input type="text" name="passlogin" size="50"/> <br />
+            <input type="submit" value="Login" />
+            <input type="reset" value="Cancelar" /> 
+        </form>
     </body>
 </html>

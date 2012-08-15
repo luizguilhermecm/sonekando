@@ -31,7 +31,7 @@ public class Factory {
          * facilitar a vida.
          */
 
-        // TODO: criar conexões com diferentes permissoes
+        // TODO: criar conexões com diferentes permissoes no banco
         public Connection getCon() throws SQLException {
                 return DriverManager.getConnection(url, user, password);
         }

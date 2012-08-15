@@ -38,13 +38,14 @@ public class UserDao {
         public void InsertUser(Users _user){
                 try{
                         Conectar();
-                        query = "INSERT INTO users (uname, usex, uemail, pass) VALUES (?, ?, ?, ?);";
+                        query = "INSERT INTO users (uname, usex, uemail, upass) VALUES (?, ?, ?, ?) returning uid;";
                         pstm = conn.prepareStatement(query);
                         pstm.setString(1, _user.getName());
                         pstm.setString(2, _user.getSex());
                         pstm.setString(3, _user.getEmail());
                         pstm.setString(4, _user.getPass());
-                        pstm.executeUpdate();
+                        ResultSet rs = pstm.executeQuery();
+                        if (rs.next()) _user.setId(rs.getInt("uid"));
                         Desconectar();
                 } catch (Exception e) {
                         e.printStackTrace();
@@ -54,20 +55,108 @@ public class UserDao {
         public boolean LoginDao (Users _user){
             try{
                 Conectar();
-                query = "SELECT uemail,pass FROM users WHERE uemail=? AND pass=?";
+                query = "SELECT uemail,upass FROM users WHERE uemail=? AND upass=?";
                 pstm = conn.prepareStatement(query);
                 pstm.setString(1, _user.getEmail());
                 pstm.setString(2, _user.getPass());
                 
                 ResultSet rs = pstm.executeQuery();
                                 
-                if(rs.next()) return true;
-                else return false;
-              
+                if(rs.next()) {
+                    return true;
+                }
+                else return false;              
             } catch (Exception e){
-                e.printStackTrace();
                 return false;
             }
         }
-
+        
+        public int getIdDao (String _uemail){
+            try{
+                Conectar();
+                query = "SELECT uid FROM users WHERE uemail=?;";
+                pstm = conn.prepareStatement(query);
+                pstm.setString(1, _uemail);
+                
+                ResultSet rs = pstm.executeQuery();
+                                
+                if(rs.next()) {
+                    return rs.getInt("uid");
+                }
+                return 0;
+            } catch (Exception e){
+                return 0;
+            }
+        }
+        
+        public String getNomeDao (int _uid){
+            try{
+                Conectar();
+                query = "SELECT ufname FROM users WHERE uid=?;";
+                pstm = conn.prepareStatement(query);
+                pstm.setInt(1, _uid);
+                
+                ResultSet rs = pstm.executeQuery();
+                                
+                if(rs.next()) {
+                    return rs.getString("ufname");
+                }
+                return "Error Select";
+            } catch (Exception e){
+                return "Error Try";
+            }
+        }
+        
+    public String getSobrenomeDao(int _uid) {
+            try{
+                Conectar();
+                query = "SELECT ulname FROM users WHERE uid=?;";
+                pstm = conn.prepareStatement(query);
+                pstm.setInt(1, _uid);
+                
+                ResultSet rs = pstm.executeQuery();
+                                
+                if(rs.next()) {
+                    return rs.getString("ulname");
+                }
+                return "Error Select";
+            } catch (Exception e){
+                return "Error Try";
+            }
+        }
+ 
+        
+        public ResultSet getAmigosDao (int _uid){
+            ResultSet rs = null;
+            try{
+                Conectar();
+                query = "SELECT ffriend_id FROM friends WHERE fuser_id=? AND faccept = 'true';";
+                pstm = conn.prepareStatement(query);
+                pstm.setInt(1, _uid);
+                
+                rs = pstm.executeQuery();
+                                
+                return rs;
+            } catch (Exception e){
+                return rs;
+            }    
+            
+        }
+        
+        public ResultSet getPendenciasDao (int _uid){
+            ResultSet rs = null;
+            try{
+                Conectar();
+                query = "SELECT fid,fuser_id FROM friends WHERE ffriend_id=? AND faccept = 'false';";
+                pstm = conn.prepareStatement(query);
+                pstm.setInt(1, _uid);
+                
+                rs = pstm.executeQuery();
+                                
+                return rs;
+            } catch (Exception e){
+                return rs;
+            }    
+            
+        }
 }

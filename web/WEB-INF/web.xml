@@ -10,6 +10,18 @@
         <servlet-name>Login</servlet-name>
         <servlet-class>users.Login</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>doLogout</servlet-name>
+        <servlet-class>doLogout</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>doAcceptFriend</servlet-name>
+        <servlet-class>doAcceptFriend</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>doRejectFriend</servlet-name>
+        <servlet-class>doRejectFriend</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Cadastro</servlet-name>
         <url-pattern>/Cadastro</url-pattern>
@@ -17,6 +29,18 @@
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>doLogout</servlet-name>
+        <url-pattern>/doLogout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>doAcceptFriend</servlet-name>
+        <url-pattern>/doAcceptFriend</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>doRejectFriend</servlet-name>
+        <url-pattern>/doRejectFriend</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
