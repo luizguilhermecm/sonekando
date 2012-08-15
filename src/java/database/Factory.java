@@ -30,6 +30,8 @@ public class Factory {
          * previlegios diferentes devera ser incluido e salvo em arquivo para
          * facilitar a vida.
          */
+
+        // TODO: criar conexões com diferentes permissoes
         public Connection getCon() throws SQLException {
                 return DriverManager.getConnection(url, user, password);
         }
