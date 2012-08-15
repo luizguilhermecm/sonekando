@@ -106,7 +106,8 @@ public class UserDao {
                 return "Error Try";
             }
         }
-        
+
+             
     public String getSobrenomeDao(int _uid) {
             try{
                 Conectar();
@@ -124,7 +125,24 @@ public class UserDao {
                 return "Error Try";
             }
         }
- 
+
+    public String getNomeCompletoDao(int _uid) {
+            try{
+                Conectar();
+                query = "SELECT (ufname || ' ' || ulname) AS fullname FROM users WHERE uid=?;";
+                pstm = conn.prepareStatement(query);
+                pstm.setInt(1, _uid);
+                
+                ResultSet rs = pstm.executeQuery();
+                                
+                if(rs.next()) {
+                    return rs.getString("fullname");
+                }
+                return "Error Select";
+            } catch (Exception e){
+                return "Error Try";
+            }
+        }    
         
         public ResultSet getAmigosDao (int _uid){
             ResultSet rs = null;
