@@ -35,7 +35,14 @@
         <%
         ResultSet _presult = _user.getPendenciasDao(user_id);
         while (_presult.next()){
-            out.print( _user.getNomeCompletoDao(_presult.getInt("fuser_id")) + "</b>");
+            int uid_pendente = _presult.getInt("fid");
+            out.print( _user.getNomeCompletoDao(_presult.getInt("fuser_id")) );
+            out.print( "<form name=input method=post action=doAcceptFriend>"
+                     + "<input type=hidden name=aceitou value=" + uid_pendente + ">"
+                     + "<input type=submit value=Aceitar></form>");
+            out.print( "<form name=input method=post action=doRejectFriend>"
+                     + "<input type=hidden name=recusou value=" + uid_pendente + ">"
+                     + "<input type=submit value=Recusar></form>");
         }
         // TODO: colocar botoes aceitar e recusar
         %>

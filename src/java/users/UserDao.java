@@ -50,7 +50,6 @@ public class UserDao {
                         if (rs.next()) _user.setId(rs.getInt("uid"));
                         Desconectar();
                 } catch (Exception e) {
-                        e.printStackTrace();
                 }
         }
         
@@ -165,4 +164,14 @@ public class UserDao {
                 rs = pstm.executeQuery();
                 return rs;
        }
+        
+       public void AceitarAmigoDao (int _fid) throws Exception {
+                Conectar();
+                query = "UPDATE friends SET faccept = 'true' WHERE faccept = 'false' AND fid = ? ;";
+                pstm = conn.prepareStatement(query);
+                pstm.setInt(1, _fid);
+                int executeUpdate = pstm.executeUpdate();
+                
+      }
+
 }

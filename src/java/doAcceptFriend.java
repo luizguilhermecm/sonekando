@@ -3,12 +3,16 @@
  * and open the template in the editor.
  */
 
+import friends.FriendDao;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import users.UserDao;
 
 /**
  *
@@ -24,21 +28,18 @@ public class doAcceptFriend extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, Exception {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            /* TODO output your page here
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet doAcceptFriend</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet doAcceptFriend at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-             */
-        } finally {            
+            int fid = Integer.parseInt(request.getParameter("aceitou"));
+            UserDao _aceitar = new UserDao();
+            _aceitar.AceitarAmigoDao(fid);
+            FriendDao _adicionar = new FriendDao();
+            _adicionar.AceitarAmigoDao(_adicionar.getFfriendIdDao(fid), _adicionar.getFuserIdDao(fid));
+            
+            
+            } finally {            
             out.close();
         }
     }
@@ -54,7 +55,11 @@ public class doAcceptFriend extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(doAcceptFriend.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /** 
@@ -67,7 +72,11 @@ public class doAcceptFriend extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(doAcceptFriend.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /** 
