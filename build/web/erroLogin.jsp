@@ -30,9 +30,9 @@ O submit do form chama a Servlet "Login" assim como a index.
         <h1>Sonekando</h1>
         <h2>Acorda e Tente outra vez.</h2>
 
-        <form name="input" method="post" action="Login">
-            Email: <input type="text" name="emaillogin" size="100"/> <br />
-            Senha: <input type="text" name="passlogin" size="50"/> <br />
+        <form name="input" method="post" action="doLogin">
+            Email: <input type="text" name="email_login" size="100"/> <br />
+            Senha: <input type="text" name="pass_login" size="50"/> <br />
             <input type="submit" value="Login" />
             <input type="reset" value="Cancelar" /> 
         </form>

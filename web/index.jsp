@@ -29,13 +29,13 @@ Existe algum css nessa pagina por isso alguns divs.
         <div id="cadastro">
             <h1>Sonekando</h1>
             <h2>Cadastre-se já! É pago :)</h2>
-            <form name="input" method="post" action="Cadastro">
-                Nome: <input type="text" name="name" size="60" tabindex="4" /> <br />
-                Sobrenome: <input type="text" name="lastname" size="60" tabindex="5" /> <br />
-                Sexo: <input type="radio" name="sex" value="m" tabindex="6" /> Masculino
+            <form name="input" method="post" action="doCadastro">
+                Nome: <input type="text" name="first_name" size="60" tabindex="4" /> <br />
+                Sobrenome: <input type="text" name="last_name" size="60" tabindex="5" /> <br />
+                Sexo: <input type="radio" name="sex" value="m" /> Masculino
                       <input type="radio" name="sex" value="f" /> Feminino <br />
-                Cidade: <input type="text" name="city" size="60" tabindex="7" /> <br />
-                Email: <input type="text" name="email" size="40" tabindex="8" /> <br />
+                Cidade: <input type="text" name="city" size="30" tabindex="7" /> <br />
+                Email: <input type="text" name="email" size="50" tabindex="8" /> <br />
                 Senha: <input type="text" name="pass" size="20"tabinde="9" /> <br />
                 <input type="submit" value="Cadastrar" />
                 <input type="reset" value="Cancelar" /> 
@@ -43,18 +43,18 @@ Existe algum css nessa pagina por isso alguns divs.
         </div>
         
         <div id="login">
-            <form name="input" method="post" action="Login">
+            <form name="input" method="post" action="doLogin">
                 <div id="login">
                     <br>
                     <input type="submit" value="Logar" tabinde="3" />
                 </div>
                 <div id="login">
                     Senha <br>
-                    <input type="text" name="passlogin" size="20" tabindex="2" />
+                    <input type="text" name="pass_login" size="20" tabindex="2" />
                 </div>
                 <div id="login">
                     Email  <br>
-                    <input type="text" name="emaillogin" size="40" tabindex="1" />
+                    <input type="text" name="email_login" size="40" tabindex="1" />
                 </div>
 
             </form>
