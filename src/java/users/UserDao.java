@@ -36,10 +36,13 @@ public class UserDao {
         pstm.close();
     }
 
-    public void InsertUser(Users _user) {
+    public boolean InsertUser(Users _user) {
+        int executeUpdate = 0;
         try {
             Conectar();
+            
             query = "INSERT INTO users (ufname, ulname, usex, ucity, uemail, upass) VALUES (?, ?, ?, ?, ?, ?);";
+            
             pstm = conn.prepareStatement(query);
             pstm.setString(1, _user.getFirstName());
             pstm.setString(2, _user.getLastName());
@@ -47,10 +50,18 @@ public class UserDao {
             pstm.setString(4, _user.getCity());
             pstm.setString(5, _user.getEmail());
             pstm.setString(6, _user.getPass());
-            int executeUpdate = pstm.executeUpdate();
+            
+            executeUpdate = pstm.executeUpdate();
+            
             Desconectar();
+
+            if (executeUpdate == 0) return false;
+            else if (executeUpdate == 1) return true;
+            
         } catch (Exception e) {
+            return false;
         }
+        return false;
     }
 
     public boolean LoginDao(Users _user) {

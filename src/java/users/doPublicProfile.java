@@ -1,26 +1,21 @@
+package users;
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 
-import friends.FriendDao;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import users.UserDao;
 
 /**
  *
  * @author snk
  */
-
-// FIX: nao esta listando nos amigos quando aceita
-public class doAcceptFriend extends HttpServlet {
+public class doPublicProfile extends HttpServlet {
 
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -30,18 +25,17 @@ public class doAcceptFriend extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, Exception {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        
         try {
-            int fid = Integer.parseInt(request.getParameter("aceitou"));
-            UserDao _aceitar = new UserDao();
-            _aceitar.AceitarAmigoDao(fid);
-            FriendDao _adicionar = new FriendDao();
-            _adicionar.AceitarAmigoDao(_adicionar.getFfriendIdDao(fid), _adicionar.getFuserIdDao(fid));
-            response.sendRedirect("profile.jsp");
+            String queryString = request.getQueryString();
+            int _uid = Integer.parseInt(queryString);
+            UserDao _userDao = new UserDao();
+            out.println(_userDao.getNomeCompletoDao(_uid));
             
-            } finally {            
+        } finally {            
             out.close();
         }
     }
@@ -57,11 +51,7 @@ public class doAcceptFriend extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (Exception ex) {
-            Logger.getLogger(doAcceptFriend.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /** 
@@ -74,11 +64,7 @@ public class doAcceptFriend extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (Exception ex) {
-            Logger.getLogger(doAcceptFriend.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /** 

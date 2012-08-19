@@ -26,11 +26,13 @@ INSERT INTO users (ufname, ulname, usex, ucity, uemail, upass) VALUES
 	('admin', 'root', 'm', 'Londrina', 'root', 'root'),
 	('Luiz Gustavo', 'Castilho Martins', 'm', 'Londrina', 'luizgustavocm@gmail.com', 'senha');
 
-select * from users
 select * from friends
+select * from users
 
 INSERT INTO friends (fuser_id, ffriend_id) VALUES (1,2), (2,3);
 INSERT INTO friends (fuser_id, ffriend_id, faccept) VALUES (1,3,'true');
+
+INSERT INTO friends (fuser_id, ffriend_id) VALUES (1,28), (1,27), (26,23), (25,28), (36,1), (33,1), (34,1);
 
 SELECT uid FROM users WHERE uemail='root';
 
@@ -38,3 +40,15 @@ SELECT (ufname || ' ' || ulname) AS fullname FROM users WHERE uid=1;
 
 UPDATE friends SET faccept = 'false' WHERE faccept = 'true' AND fid = 1 ;
 
+INSERT INTO users (ufname, ulname, usex, ucity, uemail, upass) VALUES ('Luiz Carlos', 'Martins', 'm', 'Abatiá', 'canhoto', 'senha');
+
+create user junior password 'junior';
+
+GRANT INSERT ON users TO junior;
+GRANT SELECT ON users TO junior;
+GRANT SELECT ON friends TO junior;
+GRANT REFERENCES ON users TO junior;
+GRANT REFERENCES ON friends TO junior;
+
+
+select * from pg_user;

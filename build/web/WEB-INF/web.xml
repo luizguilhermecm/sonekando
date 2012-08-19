@@ -22,6 +22,10 @@
         <servlet-name>doRejectFriend</servlet-name>
         <servlet-class>doRejectFriend</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>doPublicProfile</servlet-name>
+        <servlet-class>users.doPublicProfile</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>doLogout</servlet-name>
         <url-pattern>/doLogout</url-pattern>
@@ -41,6 +45,10 @@
     <servlet-mapping>
         <servlet-name>doLogin</servlet-name>
         <url-pattern>/doLogin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>doPublicProfile</servlet-name>
+        <url-pattern>/doPublicProfile</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

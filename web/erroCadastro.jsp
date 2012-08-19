@@ -9,18 +9,12 @@ Segundo form eh para login, e chama a Servlet "Login"
 Existe algum css nessa pagina por isso alguns divs.
 --%>
 
-<%@page import="java.util.Enumeration"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%@page language="java" %>
 <%@page import="users.*" %>
 <%@page import="database.*" %>
 <%@page import="java.sql.*" %>
-<% if (session != null) {
-    Enumeration e = session.getAttributeNames();
-    if (e.hasMoreElements()) response.sendRedirect("profile.jsp");      
-}
-%>
 
 <html>
     <head>
@@ -34,7 +28,7 @@ Existe algum css nessa pagina por isso alguns divs.
         <!-- TODO: redirecionar para profile se já estiver logado -->
         <div id="cadastro">
             <h1>Sonekando</h1>
-            <h2>Cadastre-se já! É pago :)</h2>
+            <h2>Preencha todos os campos :)</h2>
             <form name="input" method="post" action="doCadastro">
                 Nome: <input type="text" name="first_name" size="60" tabindex="4"  /> <br />
                 Sobrenome: <input type="text" name="last_name" size="60" tabindex="5"  /> <br />
@@ -48,22 +42,6 @@ Existe algum css nessa pagina por isso alguns divs.
             </form>
         </div>
         
-        <div id="login">
-            <form name="input" method="post" action="doLogin">
-                <div id="login">
-                    <br>
-                    <input type="submit" value="Logar" tabinde="3" />
-                </div>
-                <div id="login">
-                    Senha <br>
-                    <input type="text" name="pass_login" size="20" tabindex="2" />
-                </div>
-                <div id="login">
-                    Email  <br>
-                    <input type="text" name="email_login" size="40" tabindex="1" />
-                </div>
-
-            </form>
         </div>
     </body>
 </html>
