@@ -31,9 +31,11 @@ public class doPublicProfile extends HttpServlet {
         
         try {
             String queryString = request.getQueryString();
+            // TODO: enviar doPublicProfile?id=3 .. tentar pegar pela variavel
             int _uid = Integer.parseInt(queryString);
             UserDao _userDao = new UserDao();
             out.println(_userDao.getNomeCompletoDao(_uid));
+            //TODO: criar o uma pagina que coloque todos os dados do usuario
             
         } finally {            
             out.close();

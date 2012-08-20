@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -39,8 +40,7 @@ public class doAcceptFriend extends HttpServlet {
             _aceitar.AceitarAmigoDao(fid);
             FriendDao _adicionar = new FriendDao();
             _adicionar.AceitarAmigoDao(_adicionar.getFfriendIdDao(fid), _adicionar.getFuserIdDao(fid));
-            response.sendRedirect("profile.jsp");
-            
+            //TODO: Redirecionar para profile do amigo aceito ou voltar para profile.jsp
             } finally {            
             out.close();
         }

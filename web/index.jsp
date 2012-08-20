@@ -4,8 +4,8 @@
     Author     : snk
 
 Index do Sonekando
-Primeiro form eh para cadastro, e chama a Servlet "Cadastro"
-Segundo form eh para login, e chama a Servlet "Login"
+Primeiro form eh para cadastro, e chama a Servlet "doCadastro"
+Segundo form eh para login, e chama a Servlet "doLogin"
 Existe algum css nessa pagina por isso alguns divs.
 --%>
 
@@ -16,10 +16,13 @@ Existe algum css nessa pagina por isso alguns divs.
 <%@page import="users.*" %>
 <%@page import="database.*" %>
 <%@page import="java.sql.*" %>
+
 <% if (session != null) {
     Enumeration e = session.getAttributeNames();
     if (e.hasMoreElements()) response.sendRedirect("profile.jsp");      
-}
+} 
+// caso usuario esteja logado esse if o redireciona para profile.jsp, erro quando sessão expirou.
+// TODO: verificar melhor modo de redireciona-lo para profile.jsp mesmo quando sessao velha.
 %>
 
 <html>
@@ -31,7 +34,6 @@ Existe algum css nessa pagina por isso alguns divs.
     </head>
 
     <body>
-        <!-- TODO: redirecionar para profile se já estiver logado -->
         <div id="cadastro">
             <h1>Sonekando</h1>
             <h2>Cadastre-se já! É pago :)</h2>

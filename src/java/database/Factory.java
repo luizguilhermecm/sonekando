@@ -16,9 +16,8 @@ import java.sql.*;
  * String user -> nome de usuario do Postgresql
  * String password -> senha do usuario do Postgresql
  */
+// TODO: criar conexões com diferentes permissoes no banco
 public class Factory {
- 
-    
         private static String url = "jdbc:postgresql://localhost/postgres";
         private static String user = "postgres";
         private static String password = "soneka";
@@ -30,8 +29,6 @@ public class Factory {
          * previlegios diferentes devera ser incluido e salvo em arquivo para
          * facilitar a vida.
          */
-
-        // TODO: criar conexões com diferentes permissoes no banco
         public Connection getCon() throws SQLException {
                 return DriverManager.getConnection(url, user, password);
         }

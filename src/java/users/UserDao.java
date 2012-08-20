@@ -36,6 +36,7 @@ public class UserDao {
         pstm.close();
     }
 
+    //TODO: enviar upass com md5()
     public boolean InsertUser(Users _user) {
         int executeUpdate = 0;
         try {
@@ -159,9 +160,10 @@ public class UserDao {
     public ResultSet getAmigosDao(int _uid) throws Exception {
         ResultSet rs = null;
         Conectar();
-        query = "SELECT ffriend_id FROM friends WHERE fuser_id=? AND faccept = 'true';";
+        query = "SELECT fuser_id,ffriend_id FROM friends WHERE (fuser_id=? OR ffriend_id=?) AND faccept = 'true';";
         pstm = conn.prepareStatement(query);
         pstm.setInt(1, _uid);
+        pstm.setInt(2, _uid);
         rs = pstm.executeQuery();
         return rs;
     }

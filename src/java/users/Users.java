@@ -75,7 +75,8 @@ public class Users {
     public void setPass(String _pass) {
         this.pass = _pass;
     }
-
+    
+    //caso ocorra algum erro na insersão no banco retornará false
     public boolean NewUser(Users _user) {
         UserDao aux = new UserDao();
         return aux.InsertUser(_user);

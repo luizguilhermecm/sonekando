@@ -11,7 +11,8 @@
 <%@page import="users.*" %>
 <%@page import="java.sql.*" %>
 
-<%-- FIX: Se usuário não estiver logado redirecionar para index.  --%>
+<%-- FIX: Se usuário não estiver logado redirecionar para index. Ainda não sei como fazer --%>
+<%-- TODO: ver como alguem fez para verificar se sessão é invalida e adaptar aqui --%>
 <% int user_id = Integer.parseInt(session.getAttribute("user_id").toString()); %>
 <% UserDao _user = new UserDao(); %>
 <html>
@@ -25,10 +26,16 @@
         <%
             ResultSet _fresult = _user.getAmigosDao(user_id);
             int _ffriend_id;
+            int _fuser_id;
             while (_fresult.next()) {
                 _ffriend_id = _fresult.getInt("ffriend_id");
+                _fuser_id = _fresult.getInt("fuser_id");
+                if (_ffriend_id != user_id)
                 out.println("<a href=doPublicProfile?" + _ffriend_id + "> "
                         + _user.getNomeCompletoDao(_ffriend_id) + "</a><br>");
+                else 
+                    out.println("<a href=doPublicProfile?" + _fuser_id + "> "
+                        + _user.getNomeCompletoDao(_fuser_id) + "</a><br>");
             }
         %>
         
@@ -38,7 +45,6 @@
         <%
         ResultSet _presult = _user.getPendenciasDao(user_id);
         int uid_pendente;
-        int _fuser_id;
         while (_presult.next()){
             uid_pendente = _presult.getInt("fid");
             _fuser_id = _presult.getInt("fuser_id");
@@ -51,7 +57,6 @@
                      + "<input type=hidden name=recusou value=" + uid_pendente + ">"
                      + "<input type=submit value=Recusar></form>");
         }
-        // TODO: colocar botoes aceitar e recusar
         %>
         
         <hr>

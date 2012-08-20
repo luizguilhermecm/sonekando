@@ -3,10 +3,8 @@
     Created on : 13/08/2012, 12:05:41
     Author     : snk
 
-Index do Sonekando
-Primeiro form eh para cadastro, e chama a Servlet "Cadastro"
-Segundo form eh para login, e chama a Servlet "Login"
-Existe algum css nessa pagina por isso alguns divs.
+Essa pagina basicamente será usada quando o infeliz não entrar com todos os campos
+ou der erro de insersão no banco, será redirecionada para essa página.
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -25,7 +23,6 @@ Existe algum css nessa pagina por isso alguns divs.
     </head>
 
     <body>
-        <!-- TODO: redirecionar para profile se já estiver logado -->
         <div id="cadastro">
             <h1>Sonekando</h1>
             <h2>Preencha todos os campos :)</h2>
