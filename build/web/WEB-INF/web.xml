@@ -26,6 +26,10 @@
         <servlet-name>doPublicProfile</servlet-name>
         <servlet-class>users.doPublicProfile</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>doStringSearch</servlet-name>
+        <servlet-class>users.doStringSearch</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>doLogout</servlet-name>
         <url-pattern>/doLogout</url-pattern>
@@ -49,6 +53,10 @@
     <servlet-mapping>
         <servlet-name>doAcceptFriend</servlet-name>
         <url-pattern>/doAcceptFriend</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>doStringSearch</servlet-name>
+        <url-pattern>/doStringSearch</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

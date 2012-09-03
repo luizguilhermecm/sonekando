@@ -29,16 +29,25 @@ INSERT INTO users (ufname, ulname, usex, ucity, uemail, upass) VALUES
 select * from friends
 select * from users
 
+INSERT INTO friends (fuser_id, ffriend_id, faccept) VALUES (34, 1, 'true');
+
+UPDATE users SET uemail='nando' WHERE uid=4;
+
+DELETE FROM users WHERE ufname='asdf';
+
 INSERT INTO friends (fuser_id, ffriend_id) VALUES (1,2), (2,3);
 INSERT INTO friends (fuser_id, ffriend_id, faccept) VALUES (1,3,'true');
 
 INSERT INTO friends (fuser_id, ffriend_id) VALUES (1,28), (1,27), (26,23), (25,28), (36,1), (33,1), (34,1);
+INSERT INTO friends (fuser_id, ffriend_id) VALUES  (6,37), (30,37);
 
 SELECT uid FROM users WHERE uemail='root';
 
 SELECT (ufname || ' ' || ulname) AS fullname FROM users WHERE uid=1;
 
 UPDATE friends SET faccept = 'false' WHERE faccept = 'true' AND fid = 1 ;
+
+UPDATE friends SET faccept = 'false' WHERE faccept = 'true'
 
 INSERT INTO users (ufname, ulname, usex, ucity, uemail, upass) VALUES ('Luiz Carlos', 'Martins', 'm', 'Abatiá', 'canhoto', 'senha');
 

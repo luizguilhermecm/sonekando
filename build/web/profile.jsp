@@ -22,6 +22,10 @@
     </head>
     <body>
         <h1> Bom Dia <% out.print(nome); %> </h1>
+        <form name="input" method="post" action="StringSearch.jsp">
+            <input type="text" name="string_search" size="30" />
+            <input type="submit" value="Buscar" />
+        </form>
         <h2> Meus Amigos: </h2>
         <%
             ResultSet _fresult = _user.getAmigosDao(user_id);
@@ -31,10 +35,10 @@
                 _ffriend_id = _fresult.getInt("ffriend_id");
                 _fuser_id = _fresult.getInt("fuser_id");
                 if (_ffriend_id != user_id)
-                out.println("<a href=doPublicProfile?" + _ffriend_id + "> "
+                out.println("<a href=publicProfile.jsp?" + _ffriend_id + "> "
                         + _user.getNomeCompletoDao(_ffriend_id) + "</a><br>");
                 else 
-                    out.println("<a href=doPublicProfile?" + _fuser_id + "> "
+                    out.println("<a href=publicProfile.jsp?" + _fuser_id + "> "
                         + _user.getNomeCompletoDao(_fuser_id) + "</a><br>");
             }
         %>

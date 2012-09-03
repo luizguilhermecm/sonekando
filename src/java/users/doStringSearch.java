@@ -1,11 +1,13 @@
+package users;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 
-import friends.FriendDao;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author snk
  */
-public class doRejectFriend extends HttpServlet {
+public class doStringSearch extends HttpServlet {
 
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -32,12 +34,7 @@ public class doRejectFriend extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            int fid = Integer.parseInt(request.getParameter("recusou"));
-            
-            FriendDao _recusar = new FriendDao();
-            _recusar.RejeitarAmigo(fid);
-            
-            response.sendRedirect("profile.jsp");
+
         } finally {            
             out.close();
         }
@@ -56,8 +53,9 @@ public class doRejectFriend extends HttpServlet {
             throws ServletException, IOException {
         try {
             processRequest(request, response);
+
         } catch (SQLException ex) {
-            Logger.getLogger(doRejectFriend.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(doStringSearch.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -73,8 +71,9 @@ public class doRejectFriend extends HttpServlet {
             throws ServletException, IOException {
         try {
             processRequest(request, response);
+            
         } catch (SQLException ex) {
-            Logger.getLogger(doRejectFriend.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(doStringSearch.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

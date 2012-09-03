@@ -20,7 +20,7 @@ import users.UserDao;
  * @author snk
  */
 
-// FIX: nao esta listando nos amigos quando aceita
+// FIX: nao esta listando nos amigos quando aceita 
 public class doAcceptFriend extends HttpServlet {
 
     /** 
@@ -36,11 +36,14 @@ public class doAcceptFriend extends HttpServlet {
         PrintWriter out = response.getWriter();
         try {
             int fid = Integer.parseInt(request.getParameter("aceitou"));
-            UserDao _aceitar = new UserDao();
-            _aceitar.AceitarAmigoDao(fid);
+
             FriendDao _adicionar = new FriendDao();
-            _adicionar.AceitarAmigoDao(_adicionar.getFfriendIdDao(fid), _adicionar.getFuserIdDao(fid));
-            //TODO: Redirecionar para profile do amigo aceito ou voltar para profile.jsp
+            
+            _adicionar.AdicionarAmigoDao(_adicionar.getFfriendIdDao(fid), _adicionar.getFuserIdDao(fid));
+            _adicionar.AceitarAmigoDao(fid);
+            
+            response.sendRedirect("profile.jsp");
+            //TODO: Redirecionar para profile do amdigo aceito ou voltar para profile.jsp
             } finally {            
             out.close();
         }

@@ -34,7 +34,7 @@ public class FriendDao {
         public int getFuserIdDao (int _fid){
             try{
                 Conectar();
-                query = "SELECT fuiser_id FROM friends WHERE fid=?;";
+                query = "SELECT fuser_id FROM friends WHERE fid=?;";
                 pstm = conn.prepareStatement(query);
                 pstm.setInt(1, _fid);
                 
@@ -67,14 +67,28 @@ public class FriendDao {
             }
             
         }  
-        
+        public void AceitarAmigoDao (int _fid) throws Exception {
+                Conectar();
+                query = "UPDATE friends SET faccept = 'true' WHERE faccept = 'false' AND fid = ?;";
+                pstm = conn.prepareStatement(query);
+                pstm.setInt(1, _fid);
+            int executeUpdate = pstm.executeUpdate();
+        }        
         // FIX: funcao traiçoeira, arrumar forma de melhorar isso
-        public void AceitarAmigoDao (int _fuser_id, int _ffriend_id) throws Exception {
+        public void AdicionarAmigoDao (int _fuser_id, int _ffriend_id) throws Exception {
                 Conectar();
                 query = "INSERT INTO friends (fuser_id, ffriend_id, faccept) VALUES (?, ?, 'true');";
                 pstm = conn.prepareStatement(query);
                 pstm.setInt(1, _fuser_id);
                 pstm.setInt(2, _ffriend_id);
             int executeUpdate = pstm.executeUpdate();
+        }
+        
+        public void RejeitarAmigo (int _fid) throws SQLException{
+                Conectar();
+                query = "DELETE FROM friends WHERE fid=?;";
+                pstm = conn.prepareStatement(query);
+                pstm.setInt(1, _fid);
+                int executeUpdate = pstm.executeUpdate();
         }
 }

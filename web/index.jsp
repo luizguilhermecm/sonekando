@@ -28,7 +28,7 @@ Existe algum css nessa pagina por isso alguns divs.
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title> Sonekando </title>
+        <title> Sonekando, seu lindo :* </title>
 
         <link href="login-box.css" rel="stylesheet" type="text/css" />
     </head>

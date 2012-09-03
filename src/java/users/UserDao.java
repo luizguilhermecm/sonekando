@@ -41,9 +41,9 @@ public class UserDao {
         int executeUpdate = 0;
         try {
             Conectar();
-            
+
             query = "INSERT INTO users (ufname, ulname, usex, ucity, uemail, upass) VALUES (?, ?, ?, ?, ?, ?);";
-            
+
             pstm = conn.prepareStatement(query);
             pstm.setString(1, _user.getFirstName());
             pstm.setString(2, _user.getLastName());
@@ -51,14 +51,17 @@ public class UserDao {
             pstm.setString(4, _user.getCity());
             pstm.setString(5, _user.getEmail());
             pstm.setString(6, _user.getPass());
-            
+
             executeUpdate = pstm.executeUpdate();
-            
+
             Desconectar();
 
-            if (executeUpdate == 0) return false;
-            else if (executeUpdate == 1) return true;
-            
+            if (executeUpdate == 0) {
+                return false;
+            } else if (executeUpdate == 1) {
+                return true;
+            }
+
         } catch (Exception e) {
             return false;
         }
@@ -157,13 +160,54 @@ public class UserDao {
         }
     }
 
+    public String getCityDao(int _uid) {
+        try {
+            Conectar();
+            query = "SELECT ucity FROM users WHERE uid=?;";
+            pstm = conn.prepareStatement(query);
+            pstm.setInt(1, _uid);
+
+            ResultSet rs = pstm.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("ucity");
+            }
+            return "Error Select";
+        } catch (Exception e) {
+            return "Error Try";
+        }
+    }
+
+    public Users getUserDao(int _uid) throws Exception {
+
+        Conectar();
+        Users _user = null;
+
+        query = "SELECT * FROM users WHERE uid=?;";
+        pstm = conn.prepareStatement(query);
+        pstm.setInt(1, _uid);
+
+        ResultSet rs = pstm.executeQuery();
+
+        if (rs.next()) {
+            _user.setId(rs.getInt("uid"));
+            _user.setFirstName(rs.getString("ufname"));
+            _user.setLastName(rs.getString("ulname"));
+            _user.setSex(rs.getString("usex"));
+            _user.setCity(rs.getString("ucity"));
+            _user.setEmail(rs.getString("ucity"));
+
+            return _user;
+        }
+        return null;
+    }
+
     public ResultSet getAmigosDao(int _uid) throws Exception {
         ResultSet rs = null;
         Conectar();
-        query = "SELECT fuser_id,ffriend_id FROM friends WHERE (fuser_id=? OR ffriend_id=?) AND faccept = 'true';";
+        query = "SELECT fuser_id,ffriend_id FROM friends WHERE fuser_id=? AND faccept = 'true';";
         pstm = conn.prepareStatement(query);
         pstm.setInt(1, _uid);
-        pstm.setInt(2, _uid);
         rs = pstm.executeQuery();
         return rs;
     }
@@ -177,13 +221,16 @@ public class UserDao {
         rs = pstm.executeQuery();
         return rs;
     }
-
-    public void AceitarAmigoDao(int _fid) throws Exception {
+   
+    public ResultSet SearchUsers (String _name) throws SQLException{
         Conectar();
-        query = "UPDATE friends SET faccept = 'true' WHERE faccept = 'false' AND fid = ? ;";
+        //FIX: retornar se ocorrer parte do nome, nao lembro como!
+        String _query_name = "%" + _name + "%";
+        query = "SELECT uid, (ufname || ' ' || ulname) AS full_name FROM users WHERE ufname LIKE ? OR ulname LIKE ?;";
         pstm = conn.prepareStatement(query);
-        pstm.setInt(1, _fid);
-        int executeUpdate = pstm.executeUpdate();
-
+        pstm.setString(1, _query_name);
+        pstm.setString(2, _query_name);
+        ResultSet rs = pstm.executeQuery();
+        return rs;
     }
 }
