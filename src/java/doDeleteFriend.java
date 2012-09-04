@@ -2,24 +2,25 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package users;
 
+import friends.FriendDao;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 
 /**
  *
  * @author snk
- * Servlet chamada no formulario de cadastro, 
- * Essa Servlet cria um objeto Users e insere os dados do formulário no objeto.
- * NewUser(_user) eh a funcao em Users que faz o meio de campo para insersão no
- * banco
  */
-public class Cadastro extends HttpServlet {
+public class doDeleteFriend extends HttpServlet {
 
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -29,22 +30,21 @@ public class Cadastro extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-
-            Users _user = new Users();
-            _user.setName(request.getParameter("name"));
-            _user.setSex(request.getParameter("sex"));
-            _user.setEmail(request.getParameter("email"));
-            _user.setPass(request.getParameter("pass"));
-
-            // TODO: retornar o id do usuario quando inserir e salvar
+            HttpSession session = request.getSession();
+            int user_id = Integer.parseInt(session.getAttribute("user_id").toString());
             
-            _user.NewUser(_user);
-
-        } finally {
+            int _ffriend_id = Integer.parseInt(request.getParameter("deletou"));
+            
+            FriendDao _deletar = new FriendDao();
+            _deletar.DeletarAmigo(user_id, _ffriend_id);
+                    
+            response.sendRedirect("profile.jsp");
+           
+        } finally {            
             out.close();
         }
     }
@@ -60,7 +60,11 @@ public class Cadastro extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(doDeleteFriend.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /** 
@@ -73,7 +77,11 @@ public class Cadastro extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(doDeleteFriend.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /** 

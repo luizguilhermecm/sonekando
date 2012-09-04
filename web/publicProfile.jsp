@@ -4,10 +4,14 @@
     Author     : snk
 --%>
 
+<%@page import="friends.FriendDao"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="users.Users"%>
 <%@page import="users.UserDao"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<% int user_id = Integer.parseInt(session.getAttribute("user_id").toString()); %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,7 +19,9 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <%
+         <p style="text-align: right"><a href="profile.jsp"> Minha Cama </a></p>
+        
+         <%
             String queryString = request.getQueryString();
             // TODO: enviar doPublicProfile?id=3 .. tentar pegar pela variavel
             int _uid = Integer.parseInt(queryString);
@@ -23,22 +29,31 @@
             out.println("<h1>" + _userDao.getNomeCompletoDao(_uid) + "</h1>");
             //TODO: criar o uma pagina que coloque todos os dados do usuario
         %>
-        <h2>Amigos desse Sonolento:</h2>
+        
         <%
-            ResultSet _fresult = _userDao.getAmigosDao(_uid);
-            int _ffriend_id;
-            int _fuser_id;
-            while (_fresult.next()) {
-                _ffriend_id = _fresult.getInt("ffriend_id");
-                _fuser_id = _fresult.getInt("fuser_id");
-                 if (_ffriend_id != _uid)
-                out.println("<a href=publicProfile.jsp?" + _ffriend_id + "> "
-                        + _userDao.getNomeCompletoDao(_ffriend_id) + "</a><br>");
-                else 
-                    out.println("<a href=publicProfile.jsp?" + _fuser_id + "> "
-                        + _userDao.getNomeCompletoDao(_fuser_id) + "</a><br>");
+            FriendDao _friendDao = new FriendDao();
+            if( !(_friendDao.VerificarAmizade(user_id, _uid)) ){
+                      out.print( "<form name=input method=post action=doRequestFriend>"
+                     + "<input type=hidden name=requisitar value=" + _uid + ">"
+                     + "<input type=submit value=Adicionar></form>");
             }
         %>
+        
+        
+
+        <h2>Amigos desse Sonolento:</h2>
+        <%
+            ResultSet _fresult = _friendDao.getAmigosDao(_uid);
+            int _ffriend_id;
+            
+            while (_fresult.next()) {
+                _ffriend_id = _fresult.getInt("ffriend_id");
+                out.println("<a href=publicProfile.jsp?" + _ffriend_id + "> "
+                        + _userDao.getNomeCompletoDao(_ffriend_id) + "</a><br>");
+            }
+        %>
+        
+        
 
     </body>
 </html>

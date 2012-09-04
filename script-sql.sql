@@ -21,6 +21,24 @@ fgroup VARCHAR(50) DEFAULT 'Amigos',
 faccept BOOLEAN DEFAULT 'false'
 );
 
+CREATE TABLE groups
+(
+	gid SERIAL PRIMARY KEY,
+	guser_id INTEGER REFERENCES users(uid),
+	gname VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE friend_group
+(
+	fgid SERIAL PRIMARY KEY,
+	friendship_id INTEGER REFERENCES friends(fid),
+	group_id INTEGER REFERENCES groups(gid) DEFAULT 0
+);
+
+INSERT INTO friend_group (friendship_id, group_id) VALUES (59, 2);
+
+INSERT INTO groups (guser_id, gname) VALUES (1, 'Amigos'), (1, 'UEL');
+
 INSERT INTO users (ufname, ulname, usex, ucity, uemail, upass) VALUES 
 	('Luiz Guilherme', 'Castilho Martins', 'm', 'Londrina', 'luizgui@gmail.com', 'soneka'),
 	('admin', 'root', 'm', 'Londrina', 'root', 'root'),
@@ -28,6 +46,11 @@ INSERT INTO users (ufname, ulname, usex, ucity, uemail, upass) VALUES
 
 select * from friends
 select * from users
+select * from groups
+
+DELETE FROM friend_group where fgid = 3;
+
+DELETE FROM friends WHERE fid=25;
 
 INSERT INTO friends (fuser_id, ffriend_id, faccept) VALUES (34, 1, 'true');
 
@@ -59,5 +82,20 @@ GRANT SELECT ON friends TO junior;
 GRANT REFERENCES ON users TO junior;
 GRANT REFERENCES ON friends TO junior;
 
-
 select * from pg_user;
+
+SELECT uid, (ufname || ' ' || ulname) AS full_name FROM users WHERE LOWER(ufname) LIKE LOWER('luiz%') OR ulname LIKE 'luiz';
+
+SELECT gid, gname FROM groups WHERE gid IN (SELECT gid FROM groups WHERE guser_id = 1
+EXCEPT
+(SELECT group_id FROM friend_group WHERE friendship_id = 12))
+
+SELECT uid, ufname, ulname FROM users WHERE uid IN(
+SELECT ffriend_id FROM friends WHERE fid IN (
+SELECT friendship_id FROM friend_group WHERE group_id = 1));
+
+
+SELECT * FROM groups, friend_group WHERE f.friendship_id <> 12 AND group_id = gid;
+
+select * from pg_stat_activity where datname='postgres';
+select pg_terminate_backend(procpid) from pg_stat_activity where datname=ww'postgres';

@@ -16,6 +16,8 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <p style="text-align: right"><a href="profile.jsp"> Minha Cama </a></p>
+
         <h1>Encontramos isso:</h1>
         <%
             UserDao _userDao = new UserDao();

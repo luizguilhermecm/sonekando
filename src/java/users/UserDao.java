@@ -33,16 +33,23 @@ public class UserDao {
 
     public void Desconectar() throws SQLException {
         conn.close();
-        pstm.close();
+//        pstm.close();
     }
 
-    //TODO: enviar upass com md5()
+    //That methos is responsible to insert new users in DB.
+    //Its receives a Users object and conect with DB and Insert all the datas
+    //in DB, except ID, because that number is gives for DB.
+    //For execute a query is used a "pstm.executeUpdate" what return a integer
+    //That return 1 if the query was good and return 0 if couldn't finish the
+    //query. Using that returns of DB this method return a boolean true if DB
+    //return 1 and false if DB return 0.
     public boolean InsertUser(Users _user) {
         int executeUpdate = 0;
         try {
             Conectar();
 
             query = "INSERT INTO users (ufname, ulname, usex, ucity, uemail, upass) VALUES (?, ?, ?, ?, ?, ?);";
+            //TODO: send upass with md5(?)
 
             pstm = conn.prepareStatement(query);
             pstm.setString(1, _user.getFirstName());
@@ -68,6 +75,10 @@ public class UserDao {
         return false;
     }
 
+    //LoginDao is used to verify if the user put in login area correct datas.
+    //That method receives an object Users and make a query in DB, looking for
+    //uemail and upass and compare with Users. If both is equal its return true
+    //if not equal return false.
     public boolean LoginDao(Users _user) {
         try {
             Conectar();
@@ -77,6 +88,7 @@ public class UserDao {
             pstm.setString(2, _user.getPass());
 
             ResultSet rs = pstm.executeQuery();
+            Desconectar();
 
             if (rs.next()) {
                 return true;
@@ -88,6 +100,13 @@ public class UserDao {
         }
     }
 
+    //That method receives a String _uemail like parameter, and _uemail is the
+    //login the user uses to enter in sonekando. That _uemail is unique in DB.
+    //This method receive that unique email and make a query looking for your
+    //row in DB e return a ResultSet with uid.
+    //This method just can be used after the user did login in sonekando.
+    //If the ResultSet didn't has a uid that is because something wrong happens.
+    //In that case that method return 0 because not exist a user in DB with id 0.
     public int getIdDao(String _uemail) {
         try {
             Conectar();
@@ -96,6 +115,7 @@ public class UserDao {
             pstm.setString(1, _uemail);
 
             ResultSet rs = pstm.executeQuery();
+            Desconectar();
 
             if (rs.next()) {
                 return rs.getInt("uid");
@@ -114,6 +134,7 @@ public class UserDao {
             pstm.setInt(1, _uid);
 
             ResultSet rs = pstm.executeQuery();
+            Desconectar();
 
             if (rs.next()) {
                 return rs.getString("ufname");
@@ -132,6 +153,7 @@ public class UserDao {
             pstm.setInt(1, _uid);
 
             ResultSet rs = pstm.executeQuery();
+            Desconectar();
 
             if (rs.next()) {
                 return rs.getString("ulname");
@@ -150,6 +172,7 @@ public class UserDao {
             pstm.setInt(1, _uid);
 
             ResultSet rs = pstm.executeQuery();
+            Desconectar();
 
             if (rs.next()) {
                 return rs.getString("fullname");
@@ -168,6 +191,7 @@ public class UserDao {
             pstm.setInt(1, _uid);
 
             ResultSet rs = pstm.executeQuery();
+            Desconectar();
 
             if (rs.next()) {
                 return rs.getString("ucity");
@@ -188,6 +212,7 @@ public class UserDao {
         pstm.setInt(1, _uid);
 
         ResultSet rs = pstm.executeQuery();
+            Desconectar();
 
         if (rs.next()) {
             _user.setId(rs.getInt("uid"));
@@ -202,16 +227,9 @@ public class UserDao {
         return null;
     }
 
-    public ResultSet getAmigosDao(int _uid) throws Exception {
-        ResultSet rs = null;
-        Conectar();
-        query = "SELECT fuser_id,ffriend_id FROM friends WHERE fuser_id=? AND faccept = 'true';";
-        pstm = conn.prepareStatement(query);
-        pstm.setInt(1, _uid);
-        rs = pstm.executeQuery();
-        return rs;
-    }
-
+    //This method receives a uid of user what is logged in sonekando.
+    //Its receives a uid and make a query looking for asks of friendship with
+    //him and didn't was accept yet.
     public ResultSet getPendenciasDao(int _uid) throws Exception {
         ResultSet rs = null;
         Conectar();
@@ -219,18 +237,22 @@ public class UserDao {
         pstm = conn.prepareStatement(query);
         pstm.setInt(1, _uid);
         rs = pstm.executeQuery();
+        Desconectar();
+
         return rs;
     }
-   
-    public ResultSet SearchUsers (String _name) throws SQLException{
+
+    public ResultSet SearchUsers(String _name) throws SQLException {
         Conectar();
         //FIX: retornar se ocorrer parte do nome, nao lembro como!
         String _query_name = "%" + _name + "%";
-        query = "SELECT uid, (ufname || ' ' || ulname) AS full_name FROM users WHERE ufname LIKE ? OR ulname LIKE ?;";
+        query = "SELECT uid, (ufname || ' ' || ulname) AS full_name FROM users WHERE LOWER(ufname) LIKE LOWER(?) OR LOWER(ulname) LIKE LOWER(?);";
         pstm = conn.prepareStatement(query);
         pstm.setString(1, _query_name);
         pstm.setString(2, _query_name);
         ResultSet rs = pstm.executeQuery();
+        Desconectar();
+
         return rs;
     }
 }

@@ -3,6 +3,7 @@
     Created on : 15/08/2012, 15:22:44
     Author     : snk
 --%>
+<%@page import="friends.FriendDao"%>
 <%@page import="java.util.Enumeration"%>
 <!DOCTYPE html>
 
@@ -15,6 +16,8 @@
 <%-- TODO: ver como alguem fez para verificar se sessão é invalida e adaptar aqui --%>
 <% int user_id = Integer.parseInt(session.getAttribute("user_id").toString()); %>
 <% UserDao _user = new UserDao(); %>
+<% FriendDao _friendDao = new FriendDao(); %>
+
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -27,19 +30,18 @@
             <input type="submit" value="Buscar" />
         </form>
         <h2> Meus Amigos: </h2>
+        <a href="friendsManager.jsp"> Gerenciar Amigos </a> <br/><hr>
         <%
-            ResultSet _fresult = _user.getAmigosDao(user_id);
+            ResultSet _fresult = _friendDao.getAmigosDao(user_id);
             int _ffriend_id;
-            int _fuser_id;
             while (_fresult.next()) {
                 _ffriend_id = _fresult.getInt("ffriend_id");
-                _fuser_id = _fresult.getInt("fuser_id");
-                if (_ffriend_id != user_id)
+                
                 out.println("<a href=publicProfile.jsp?" + _ffriend_id + "> "
-                        + _user.getNomeCompletoDao(_ffriend_id) + "</a><br>");
-                else 
-                    out.println("<a href=publicProfile.jsp?" + _fuser_id + "> "
-                        + _user.getNomeCompletoDao(_fuser_id) + "</a><br>");
+                     + _user.getNomeCompletoDao(_ffriend_id) + "</a>"
+                     + "<form name=input method=post action=doDeleteFriend>"
+                     + "<input type=hidden name=deletou value=" + _ffriend_id + ">"
+                     + "<input type=submit value=Excluir></form>" + "<br>");
             }
         %>
         
@@ -49,10 +51,12 @@
         <%
         ResultSet _presult = _user.getPendenciasDao(user_id);
         int uid_pendente;
+        int _fuser_id;
+
         while (_presult.next()){
             uid_pendente = _presult.getInt("fid");
             _fuser_id = _presult.getInt("fuser_id");
-            out.print( "<a href=doPublicProfile?" + _fuser_id + "> " 
+            out.print( "<a href=publicProfile.jsp?" + _fuser_id + "> " 
                     + _user.getNomeCompletoDao(_fuser_id) + "</a><br>");
             out.print( "<form name=input method=post action=doAcceptFriend>"
                      + "<input type=hidden name=aceitou value=" + uid_pendente + ">"

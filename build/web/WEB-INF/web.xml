@@ -30,6 +30,31 @@
         <servlet-name>doStringSearch</servlet-name>
         <servlet-class>users.doStringSearch</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>doRequestFriend</servlet-name>
+        <servlet-class>friends.doRequestFriend</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>doDeleteFriend</servlet-name>
+        <servlet-class>doDeleteFriend</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>doNewGroup</servlet-name>
+        <servlet-class>friends.doNewGroup</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>doToGroup</servlet-name>
+        <servlet-class>friends.doToGroup</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>doGoOutOfGroup</servlet-name>
+        <servlet-class>friends.doGoOutOfGroup</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>doLogout</servlet-name>
         <url-pattern>/doLogout</url-pattern>
@@ -57,6 +82,30 @@
     <servlet-mapping>
         <servlet-name>doStringSearch</servlet-name>
         <url-pattern>/doStringSearch</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>doRequestFriend</servlet-name>
+        <url-pattern>/doRequestFriend</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>doDeleteFriend</servlet-name>
+        <url-pattern>/doDeleteFriend</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>/faces/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>doNewGroup</servlet-name>
+        <url-pattern>/doNewGroup</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>doToGroup</servlet-name>
+        <url-pattern>/doToGroup</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>doGoOutOfGroup</servlet-name>
+        <url-pattern>/doGoOutOfGroup</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
