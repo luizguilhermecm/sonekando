@@ -32,8 +32,17 @@ CREATE TABLE friend_group
 (
 	fgid SERIAL PRIMARY KEY,
 	friendship_id INTEGER REFERENCES friends(fid),
-	group_id INTEGER REFERENCES groups(gid) DEFAULT 0
+	group_id INTEGER REFERENCES groups(gid)
 );
+
+
+CREATE TABLE profile_image
+(
+	piid SERIAL PRIMARY KEY,
+	piuser_id INTEGER REFERENCES users(uid),
+	piimage bytea
+);
+
 
 INSERT INTO friend_group (friendship_id, group_id) VALUES (59, 2);
 
@@ -45,7 +54,6 @@ INSERT INTO users (ufname, ulname, usex, ucity, uemail, upass) VALUES
 	('Luiz Gustavo', 'Castilho Martins', 'm', 'Londrina', 'luizgustavocm@gmail.com', 'senha');
 
 select * from friends
-select * from users
 select * from groups
 
 DELETE FROM friend_group where fgid = 3;
@@ -94,8 +102,18 @@ SELECT uid, ufname, ulname FROM users WHERE uid IN(
 SELECT ffriend_id FROM friends WHERE fid IN (
 SELECT friendship_id FROM friend_group WHERE group_id = 1));
 
+DELETE FROM users WHERE uemail = 'dskaster'
+
+DELETE FROM friends WHERE fuser_id = 39 OR ffriend_id = 39
 
 SELECT * FROM groups, friend_group WHERE f.friendship_id <> 12 AND group_id = gid;
 
+-- return all active connections 
 select * from pg_stat_activity where datname='postgres';
-select pg_terminate_backend(procpid) from pg_stat_activity where datname=ww'postgres';
+
+SELECT ffriend_id FROM friends WHERE fuser_id IN (
+SELECT ffriend_id FROM friends WHERE ffriend_id <> 1 AND fuser_id IN (
+SELECT ffriend_id FROM friends WHERE fuser_id = 1)
+EXCEPT
+SELECT ffriend_id FROM friends WHERE fuser_id = 1
+);

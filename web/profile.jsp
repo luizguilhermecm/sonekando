@@ -25,6 +25,13 @@
     </head>
     <body>
         <h1> Bom Dia <% out.print(nome); %> </h1>
+        <hr />
+        <img src="doDownloadProfileImage?<%out.print(user_id);%>" style="width: 100px; height: 100px;">
+        <form name="input" enctype="multipart/form-data" method="post" action="doUploadProfileImage">
+            <input name="file" type="file" /><br />
+            <input type="submit" value="Enviar Arquivo">
+        </form>
+        <hr />
         <form name="input" method="post" action="StringSearch.jsp">
             <input type="text" name="string_search" size="30" />
             <input type="submit" value="Buscar" />

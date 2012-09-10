@@ -55,6 +55,18 @@
         <servlet-name>doGoOutOfGroup</servlet-name>
         <servlet-class>friends.doGoOutOfGroup</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>doUploadProfileImage</servlet-name>
+        <servlet-class>images.doUploadProfileImage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>doDownloadProfileImage</servlet-name>
+        <servlet-class>images.doDownloadProfileImage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>upload</servlet-name>
+        <servlet-class>images.upload</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>doLogout</servlet-name>
         <url-pattern>/doLogout</url-pattern>
@@ -106,6 +118,18 @@
     <servlet-mapping>
         <servlet-name>doGoOutOfGroup</servlet-name>
         <url-pattern>/doGoOutOfGroup</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>doUploadProfileImage</servlet-name>
+        <url-pattern>/doUploadProfileImage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>doDownloadProfileImage</servlet-name>
+        <url-pattern>/doDownloadProfileImage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>upload</servlet-name>
+        <url-pattern>/upload</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
