@@ -161,7 +161,9 @@ public class FriendDao {
         pstm.setInt(1, _fuser_id);
         pstm.setInt(2, _ffriend_id);
         int executeUpdate = pstm.executeUpdate();
-
+        pstm.close();
+        Desconectar();
+        Conectar();
         query = "DELETE FROM friends WHERE fuser_id=? AND ffriend_id=?;";
         pstm = conn.prepareStatement(query);
         pstm.setInt(1, _ffriend_id);
@@ -246,5 +248,32 @@ public class FriendDao {
         
         else return "Try Again";
     }    
+    
+    public ResultSet RecomendsFriends (int _uid) throws SQLException{
+        Conectar();
+        query = ""
++ "SELECT ffriend_id, "
++ "       Count(*) "
++ "FROM   friends "
++ "WHERE  fuser_id IN (SELECT ffriend_id "
++ "                     FROM   friends "
++ "                     WHERE  fuser_id = ?) "
++ "       AND ffriend_id NOT IN (SELECT ffriend_id "
++ "                            FROM   friends "
++ "                            WHERE  fuser_id = ?) "
++ "       AND ffriend_id <> ? "
++ "GROUP  BY ffriend_id "
++ "ORDER  BY Count(*) DESC "
++ "LIMIT  10 ";
+        
+        pstm = conn.prepareStatement(query);
+        pstm.setInt(1, _uid);
+        pstm.setInt(2, _uid);        
+        pstm.setInt(3, _uid);
+        
+        ResultSet rs = pstm.executeQuery();
+        return rs;
+        
+    } 
     
 }

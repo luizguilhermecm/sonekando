@@ -44,7 +44,7 @@ public class doDeleteFriend extends HttpServlet {
                     
             response.sendRedirect("profile.jsp");
            
-        } finally {            
+        } finally {     
             out.close();
         }
     }

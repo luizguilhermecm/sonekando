@@ -26,7 +26,7 @@
     <body>
         <h1> Bom Dia <% out.print(nome); %> </h1>
         <hr />
-        <img src="doDownloadProfileImage?<%out.print(user_id);%>" style="width: 100px; height: 100px;">
+        <img src="doDownloadProfileImage?<%out.print(user_id);%>" style="width: 200px">
         <form name="input" enctype="multipart/form-data" method="post" action="doUploadProfileImage">
             <input name="file" type="file" /><br />
             <input type="submit" value="Enviar Arquivo">
@@ -45,10 +45,7 @@
                 _ffriend_id = _fresult.getInt("ffriend_id");
                 
                 out.println("<a href=publicProfile.jsp?" + _ffriend_id + "> "
-                     + _user.getNomeCompletoDao(_ffriend_id) + "</a>"
-                     + "<form name=input method=post action=doDeleteFriend>"
-                     + "<input type=hidden name=deletou value=" + _ffriend_id + ">"
-                     + "<input type=submit value=Excluir></form>" + "<br>");
+                     + _user.getNomeCompletoDao(_ffriend_id) + "</a>" + "<br>");
             }
         %>
         
@@ -71,6 +68,22 @@
             out.print( "<form name=input method=post action=doRejectFriend>"
                      + "<input type=hidden name=recusou value=" + uid_pendente + ">"
                      + "<input type=submit value=Recusar></form>");
+        }
+        %>
+        
+        <hr>
+        <h2> Amigos Recomendados: </h2>
+        
+        <%
+        ResultSet _recomends = _friendDao.RecomendsFriends(user_id);
+        int _friend_id;
+        int _count;
+        while(_recomends.next()){
+            _friend_id = _recomends.getInt("ffriend_id");
+            _count = _recomends.getByte("count");
+            out.print( "<a href=publicProfile.jsp?" + _friend_id + "> " 
+                    + _user.getNomeCompletoDao(_friend_id) + "</a>(" +_count + ")<br>");
+         
         }
         %>
         

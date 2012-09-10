@@ -31,7 +31,7 @@
         %>
         <h2> Criar Grupo </h2>
         <form name="input" method="post" action="doNewGroup">
-            <textarea name="newgroup" rows="1" cols="30"> </textarea>
+            <input type="text" name="newgroup" rows="1" cols="30"> </textarea>
             <input type="submit" value="Adicionar" />
         </form>
         

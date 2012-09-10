@@ -35,13 +35,27 @@ public class ImageDao {
        // pstm.close();
     }
 
+    //before add image verify if images exist, if exist go to method ChangeImage...
+    //If don't exist keep in this method.
+    public void setImageUserProfile(int _uid, byte[] _image) throws SQLException {
+        if (getImageUserProfile(_uid) == null) {
+            Conectar();
+            query = "INSERT INTO profile_image (piuser_id, piimage) VALUES (?, ?);";
+            pstm = conn.prepareStatement(query);
+            pstm.setInt(1, _uid);
+            pstm.setBytes(2, _image);
+            int executeUpdate = pstm.executeUpdate();
+            Desconectar();
+        }
+        else ChangeImageUserProfile(_uid, _image);
+    }
     
-    public void setImageUserProfile(int _uid, byte[] _image) throws SQLException{
+    public void ChangeImageUserProfile(int _uid, byte[] _image) throws SQLException{
         Conectar();
-        query = "INSERT INTO profile_image (piuser_id, piimage) VALUES (?, ?);";
+        query = "UPDATE profile_image SET piimage=? WHERE piuser_id=?;";
         pstm = conn.prepareStatement(query);
-        pstm.setInt(1, _uid);
-        pstm.setBytes(2, _image);
+        pstm.setBytes(1, _image);
+        pstm.setInt(2, _uid);
         int executeUpdate = pstm.executeUpdate();
         Desconectar();
     }

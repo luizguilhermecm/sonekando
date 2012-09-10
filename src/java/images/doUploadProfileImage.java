@@ -1,18 +1,12 @@
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 package images;
 
-import java.awt.Image;
-import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
@@ -23,7 +17,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.swing.ImageIcon;
 import org.apache.tomcat.util.http.fileupload.FileItem;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
@@ -46,12 +39,10 @@ public class doUploadProfileImage extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
         try {
       
             
         } finally {            
-            out.close();
         }
     }
 
@@ -84,7 +75,8 @@ public class doUploadProfileImage extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-                    
+        PrintWriter out = response.getWriter();
+            
         DiskFileItemFactory factory = new DiskFileItemFactory();
         factory.setSizeThreshold(4096);
 
@@ -113,8 +105,10 @@ public class doUploadProfileImage extends HttpServlet {
         }
         catch (Exception ex)
         {
-            Logger.getLogger(doUploadProfileImage.class.getName()).log(Level.SEVERE, null, ex);
+
         }
+          
+
     }
  
     /** 

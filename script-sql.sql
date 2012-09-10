@@ -1,5 +1,7 @@
 DROP TABLE users CASCADE;
 DROP TABLE friends;
+DROP TABLE groups;
+DROP TABLE friend_group;
 
 CREATE TABLE users 
 (
@@ -17,22 +19,25 @@ CREATE TABLE friends
 fid SERIAL PRIMARY KEY,
 fuser_id INTEGER REFERENCES users(uid),
 ffriend_id INTEGER REFERENCES users(uid),
-fgroup VARCHAR(50) DEFAULT 'Amigos',
-faccept BOOLEAN DEFAULT 'false'
+faccept BOOLEAN DEFAULT 'false',
+UNIQUE(fuser_id, ffriend_id)
 );
 
 CREATE TABLE groups
 (
 	gid SERIAL PRIMARY KEY,
 	guser_id INTEGER REFERENCES users(uid),
-	gname VARCHAR(50) NOT NULL
+	gname VARCHAR(50) NOT NULL,
+	UNIQUE(guser_id, gname)
+	
 );
 
 CREATE TABLE friend_group
 (
 	fgid SERIAL PRIMARY KEY,
 	friendship_id INTEGER REFERENCES friends(fid),
-	group_id INTEGER REFERENCES groups(gid)
+	group_id INTEGER REFERENCES groups(gid),
+	UNIQUE(friendship_id, group_id)
 );
 
 
@@ -55,6 +60,7 @@ INSERT INTO users (ufname, ulname, usex, ucity, uemail, upass) VALUES
 
 select * from friends
 select * from groups
+select * from profile_image
 
 DELETE FROM friend_group where fgid = 3;
 
@@ -111,9 +117,7 @@ SELECT * FROM groups, friend_group WHERE f.friendship_id <> 12 AND group_id = gi
 -- return all active connections 
 select * from pg_stat_activity where datname='postgres';
 
-SELECT ffriend_id FROM friends WHERE fuser_id IN (
-SELECT ffriend_id FROM friends WHERE ffriend_id <> 1 AND fuser_id IN (
-SELECT ffriend_id FROM friends WHERE fuser_id = 1)
-EXCEPT
-SELECT ffriend_id FROM friends WHERE fuser_id = 1
-);
+SELECT ffriend_id, Count(*) FROM friends WHERE  fuser_id IN (
+	SELECT ffriend_id FROM   friends WHERE  fuser_id = 2 ) 
+	AND ffriend_id NOT IN (SELECT ffriend_id FROM   friends WHERE  fuser_id = 2) 
+	AND ffriend_id <> 2 GROUP  BY ffriend_id ORDER  BY Count(*) DESC LIMIT  10;

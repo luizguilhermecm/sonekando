@@ -62,11 +62,25 @@ public class doDownloadProfileImage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (SQLException ex) {
+        try 
+        {
+            byte[] imagem;
+            HttpSession session = request.getSession();
+            ImageDao imagemDAO = new ImageDao();
+            String queryString = request.getQueryString();
+            // TODO: enviar doPublicProfile?id=3 .. tentar pegar pela variavel
+            int _uid = Integer.parseInt(queryString);
+            
+            imagem = imagemDAO.getImageUserProfile(_uid);
+            
+            response.setContentType("image/jpeg");
+            response.getOutputStream().write(imagem);
+        }
+        catch (Exception ex)
+        {
             Logger.getLogger(doDownloadProfileImage.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
 
     /** 
