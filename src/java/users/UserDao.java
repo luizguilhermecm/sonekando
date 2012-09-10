@@ -74,6 +74,29 @@ public class UserDao {
         }
         return false;
     }
+    
+    public void EditUser(int _uid, Users _user) throws SQLException {
+        int executeUpdate = 0;
+
+            Conectar();
+
+            query = "UPDATE users SET ufname=?, ulname=?, usex=?, ucity=?, uemail=?, upass=? WHERE uid=?;";
+            //TODO: send upass with md5(?)
+
+            pstm = conn.prepareStatement(query);
+            pstm.setString(1, _user.getFirstName());
+            pstm.setString(2, _user.getLastName());
+            pstm.setString(3, _user.getSex());
+            pstm.setString(4, _user.getCity());
+            pstm.setString(5, _user.getEmail());
+            pstm.setString(6, _user.getPass());
+            pstm.setInt(7, _uid);
+            
+            executeUpdate = pstm.executeUpdate();
+
+            Desconectar();
+    }
+
 
     //LoginDao is used to verify if the user put in login area correct datas.
     //That method receives an object Users and make a query in DB, looking for
@@ -182,7 +205,45 @@ public class UserDao {
             return "Error Try";
         }
     }
+    
+    public String getEmailDao(int _uid) {
+        try {
+            Conectar();
+            query = "SELECT uemail FROM users WHERE uid=?;";
+            pstm = conn.prepareStatement(query);
+            pstm.setInt(1, _uid);
 
+            ResultSet rs = pstm.executeQuery();
+            Desconectar();
+
+            if (rs.next()) {
+                return rs.getString("uemail");
+            }
+            return "Error Select";
+        } catch (Exception e) {
+            return "Error Try";
+        }
+    }
+    
+       public String getPassDao(int _uid) {
+        try {
+            Conectar();
+            query = "SELECT upass FROM users WHERE uid=?;";
+            pstm = conn.prepareStatement(query);
+            pstm.setInt(1, _uid);
+
+            ResultSet rs = pstm.executeQuery();
+            Desconectar();
+
+            if (rs.next()) {
+                return rs.getString("upass");
+            }
+            return "Error Select";
+        } catch (Exception e) {
+            return "Error Try";
+        }
+    }
+    
     public String getCityDao(int _uid) {
         try {
             Conectar();
@@ -212,7 +273,7 @@ public class UserDao {
         pstm.setInt(1, _uid);
 
         ResultSet rs = pstm.executeQuery();
-            Desconectar();
+        Desconectar();
 
         if (rs.next()) {
             _user.setId(rs.getInt("uid"));
@@ -221,6 +282,7 @@ public class UserDao {
             _user.setSex(rs.getString("usex"));
             _user.setCity(rs.getString("ucity"));
             _user.setEmail(rs.getString("ucity"));
+            
 
             return _user;
         }

@@ -45,7 +45,6 @@ Existe algum css nessa pagina por isso alguns divs.
                 Cidade: <input type="text" name="city" size="30" tabindex="7"  /> <br />
                 Email: <input type="text" name="email" size="50" tabindex="8"  /> <br />
                 Senha: <input type="text" name="pass" size="20"tabinde="9"  /> <br />
-                <INPUT type="file" />
                 <input type="submit" value="Cadastrar" />
                 <input type="reset" value="Cancelar" /> 
             </form>

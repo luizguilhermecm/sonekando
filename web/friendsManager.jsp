@@ -27,12 +27,15 @@
             while (_groups.next()){
                 out.println("<a href=friendsGroup.jsp?" + _groups.getInt("gid") 
                         + ">" +  _groups.getString("gname") + "</a> <br>" );
+                 out.println("<form name=input method=post action=doDeleteGroup>"
+                   + "<input type=hidden name=deletouGrupo value=" + _groups.getInt("gid") + ">"
+                   + "<input type=submit value=Excluir-Grupo></form>" + "<br>");
             }
         %>
         <h2> Criar Grupo </h2>
         <form name="input" method="post" action="doNewGroup">
-            <input type="text" name="newgroup" rows="1" cols="30"> </textarea>
-            <input type="submit" value="Adicionar" />
+            <input type="text" name="newgroup" rows="1" cols="30" /> 
+            <input type="submit" value="Adicionar-Grupo" />
         </form>
         
 
@@ -67,7 +70,7 @@
         <%  
                   out.println("<form name=input method=post action=doDeleteFriend>"
                    + "<input type=hidden name=deletou value=" + _ffriend_id + ">"
-                   + "<input type=submit value=Excluir></form>" + "<br>");
+                   + "<input type=submit value=Excluir-Amigo></form>" + "<br>");
             }
         %>
     </body>

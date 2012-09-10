@@ -67,6 +67,14 @@
         <servlet-name>upload</servlet-name>
         <servlet-class>images.upload</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>doDeleteGroup</servlet-name>
+        <servlet-class>friends.doDeleteGroup</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>doEditProfile</servlet-name>
+        <servlet-class>users.doEditProfile</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>doLogout</servlet-name>
         <url-pattern>/doLogout</url-pattern>
@@ -130,6 +138,14 @@
     <servlet-mapping>
         <servlet-name>upload</servlet-name>
         <url-pattern>/upload</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>doDeleteGroup</servlet-name>
+        <url-pattern>/doDeleteGroup</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>doEditProfile</servlet-name>
+        <url-pattern>/doEditProfile</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

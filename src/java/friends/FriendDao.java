@@ -182,6 +182,21 @@ public class FriendDao {
         Desconectar();
     }
 
+    public void DeleteGroup(int _gid) throws SQLException {
+        Conectar();
+        query = "DELETE FROM friend_group WHERE group_id=?;";
+        pstm = conn.prepareStatement(query);
+        pstm.setInt(1, _gid);
+        int executeUpdate = pstm.executeUpdate();
+        pstm.close();
+        query = "DELETE FROM groups WHERE gid=?;";
+        pstm = conn.prepareStatement(query);
+        pstm.setInt(1, _gid);
+        executeUpdate = pstm.executeUpdate();
+        
+        Desconectar();
+    }
+    
     public ResultSet getGroups(int _guser_id) throws SQLException {
         Conectar();
         query = "SELECT gid, gname FROM groups WHERE guser_id=?;";

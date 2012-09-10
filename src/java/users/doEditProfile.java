@@ -1,15 +1,12 @@
-
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package images;
+package users;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.Iterator;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -17,17 +14,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.apache.tomcat.util.http.fileupload.FileItem;
-import org.apache.tomcat.util.http.fileupload.FileUploadException;
-import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
-import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
-
 
 /**
  *
  * @author snk
  */
-public class doUploadProfileImage extends HttpServlet {
+public class doEditProfile extends HttpServlet {
 
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -39,10 +31,36 @@ public class doUploadProfileImage extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
         try {
-      
             
+            Users _user = new Users();
+            HttpSession session = request.getSession();
+            
+            int user_id = Integer.parseInt(session.getAttribute("user_id").toString());
+            if (request.getParameter("first_name").isEmpty()
+                    || request.getParameter("last_name").isEmpty()
+                    || request.getParameter("city").isEmpty()
+                    || request.getParameter("email").isEmpty()
+                    || request.getParameter("pass").isEmpty()) {
+                response.sendRedirect("editProfile.jsp");
+            }
+
+            _user.setFirstName(request.getParameter("first_name"));
+            _user.setLastName(request.getParameter("last_name"));
+            _user.setSex(request.getParameter("sex"));
+            _user.setCity(request.getParameter("city"));
+            _user.setEmail(request.getParameter("email"));
+            _user.setPass(request.getParameter("pass"));
+
+            UserDao _userDao = new UserDao();
+            _userDao.EditUser(user_id, _user);
+            
+            response.sendRedirect("profile.jsp");
+        }catch (Exception e){
+            out.println(e);
         } finally {            
+            out.close();
         }
     }
 
@@ -60,7 +78,7 @@ public class doUploadProfileImage extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(doDownloadProfileImage.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(doEditProfile.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -74,35 +92,13 @@ public class doUploadProfileImage extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        PrintWriter out = response.getWriter();
-            
-        DiskFileItemFactory factory = new DiskFileItemFactory();
-        factory.setSizeThreshold(4096);
-
-        ServletFileUpload upload = new ServletFileUpload(factory);
-        try
-        {
-            HttpSession session = request.getSession();
-            ImageDao _image = new ImageDao();
-            int user_id = Integer.parseInt(session.getAttribute("user_id").toString());
-            
-            List fileItems = upload.parseRequest(request);
-            Iterator it = fileItems.iterator();
-            FileItem fi = (FileItem)it.next();
-            byte[] imageUpload = fi.get();
-            
-            _image.setImageUserProfile(user_id, imageUpload);
-            request.getRequestDispatcher("profile.jsp").forward(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(doEditProfile.class.getName()).log(Level.SEVERE, null, ex);
         }
-        catch (Exception ex)
-        {
-
-        }
-          
-
     }
- 
+
     /** 
      * Returns a short description of the servlet.
      * @return a String containing servlet description

@@ -25,6 +25,7 @@
     </head>
     <body>
         <h1> Bom Dia <% out.print(nome); %> </h1>
+        <a href="editProfile.jsp">Editar</a>
         <hr />
         <img src="doDownloadProfileImage?<%out.print(user_id);%>" style="width: 200px">
         <form name="input" enctype="multipart/form-data" method="post" action="doUploadProfileImage">
