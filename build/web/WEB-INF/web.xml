@@ -75,6 +75,38 @@
         <servlet-name>doEditProfile</servlet-name>
         <servlet-class>users.doEditProfile</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>doNewPost</servlet-name>
+        <servlet-class>posts.doNewPost</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>doNewComment</servlet-name>
+        <servlet-class>posts.doNewComment</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>doEditPost</servlet-name>
+        <servlet-class>posts.doEditPost</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>doDeletePost</servlet-name>
+        <servlet-class>posts.doDeletePost</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>doLikePost</servlet-name>
+        <servlet-class>posts.doLikePost</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>doUploadImagePost</servlet-name>
+        <servlet-class>posts.doUploadImagePost</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>doEstatistica</servlet-name>
+        <servlet-class>estatistica.doEstatistica</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>NewServlet</servlet-name>
+        <servlet-class>estatistica.NewServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>doLogout</servlet-name>
         <url-pattern>/doLogout</url-pattern>
@@ -146,6 +178,38 @@
     <servlet-mapping>
         <servlet-name>doEditProfile</servlet-name>
         <url-pattern>/doEditProfile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>doNewPost</servlet-name>
+        <url-pattern>/doNewPost</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>doNewComment</servlet-name>
+        <url-pattern>/doNewComment</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>doEditPost</servlet-name>
+        <url-pattern>/doEditPost</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>doDeletePost</servlet-name>
+        <url-pattern>/doDeletePost</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>doLikePost</servlet-name>
+        <url-pattern>/doLikePost</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>doUploadImagePost</servlet-name>
+        <url-pattern>/doUploadImagePost</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>doEstatistica</servlet-name>
+        <url-pattern>/doEstatistica</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NewServlet</servlet-name>
+        <url-pattern>/NewServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

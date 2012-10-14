@@ -16,7 +16,7 @@ Existe algum css nessa pagina por isso alguns divs.
 <%@page import="users.*" %>
 <%@page import="database.*" %>
 <%@page import="java.sql.*" %>
-
+<% Class.forName("org.postgresql.Driver").newInstance(); %>
 <% if (session != null) {
     Enumeration e = session.getAttributeNames();
     if (e.hasMoreElements()) response.sendRedirect("profile.jsp");      

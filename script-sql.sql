@@ -48,6 +48,67 @@ CREATE TABLE profile_image
 	piimage bytea
 );
 
+SELECT * FROM posts where post_user_id = 4;
+
+--por dia no periodo ??w
+SELECT post_user_id, post_content, post_data, post_id, SUM(post_sigma_comment*5 + post_sigma_like) as total FROM (
+SELECT post_id, post_data, post_user_id, post_content, post_sigma_comment, post_sigma_like FROM posts where post_data > '2012-10-12' AND post_data < date '2012-10-12' + integer '1' AND post_user_id IN (
+SELECT fuser_id FROM friends WHERE ffriend_id = 1)
+) j
+GROUP BY post_data, post_user_id, post_id, post_content
+ORDER BY total DESC
+
+SELECT date '2012-12-23' + integer '1' as nova_data
+SELECT date '2012-12-23' as nova_data
+
+
+CREATE TABLE posts
+(
+	post_id SERIAL PRIMARY KEY,
+	post_user_id INTEGER REFERENCES users(uid),
+	post_content TEXT NOT NULL,
+	post_sigma_like INTEGER DEFAULT 0,
+	post_sigma_comment INTEGER DEFAULT 0,
+	post_data TIMESTAMP DEFAULT now()
+);
+
+CREATE TABLE posts_comments
+(
+	comment_id SERIAL PRIMARY KEY,
+	comment_user_id INTEGER REFERENCES users(uid),
+	comment_post_id INTEGER REFERENCES posts(post_id),
+	comment_content TEXT NOT NULL,
+	comment_data TIMESTAMP DEFAULT now()
+);
+
+CREATE TABLE posts_comments
+(
+	comment_id SERIAL PRIMARY KEY,
+	comment_user_id INTEGER REFERENCES users(uid),
+	comment_post_id INTEGER REFERENCES posts(post_id),
+	comment_content TEXT NOT NULL,
+	comment_data TIMESTAMP DEFAULT now()
+);
+
+CREATE TABLE likes
+(
+	like_id SERIAL PRIMARY KEY,
+	like_user_id INTEGER REFERENCES users(uid),
+	like_post_id INTEGER REFERENCES posts(post_id) ON DELETE CASCADE,
+	like_data TIMESTAMP DEFAULT now()
+);
+
+CREATE TABLE image_post
+(
+	image_id SERIAL PRIMARY KEY,
+	image_user_id INTEGER REFERENCES users(uid),
+	image_post_id INTEGER REFERENCES posts(post_id) ON DELETE CASCADE,
+	image_image bytea
+);
+
+SELECT * FROM posts;
+
+SELECT * FROM posts_comments ORDER BY comment_data DESC;
 
 INSERT INTO friend_group (friendship_id, group_id) VALUES (59, 2);
 
@@ -121,3 +182,45 @@ SELECT ffriend_id, Count(*) FROM friends WHERE  fuser_id IN (
 	SELECT ffriend_id FROM   friends WHERE  fuser_id = 2 ) 
 	AND ffriend_id NOT IN (SELECT ffriend_id FROM   friends WHERE  fuser_id = 2) 
 	AND ffriend_id <> 2 GROUP  BY ffriend_id ORDER  BY Count(*) DESC LIMIT  10;
+
+
+SELECT j.uid, j.ufname, j.ulname, j.gid, j.gname, Count(*) AS total 
+ FROM   posts p 
+        JOIN (SELECT * 
+              FROM   users u 
+                     JOIN (SELECT * 
+                           FROM   friends f 
+                                  JOIN (SELECT * 
+                                        FROM   friend_group f 
+                                               JOIN groups g 
+                                                 ON f.group_id = gid 
+                                                    AND gid = 2) j 
+                                    ON f.fid = j.friendship_id) j 
+                       ON uid = ffriend_id) j 
+          ON p.post_user_id = j.uid 
+             AND post_data > '2012-01-01' 
+             AND post_data < '2012-11-11' 
+ GROUP  BY j.uid, j.ufname, j.gid, j.gname, j.ulname 
+ ORDER  BY total DESC 
+ LIMIT  3 ;
+
+
+SELECT post_user_id, SUM(post_sigma_comment*5 + post_sigma_like) AS total 
+FROM posts 
+WHERE post_data > '2011-01-01' AND post_data < '2013-01-01' AND post_user_id  IN (
+	SELECT uid FROM users 
+	EXCEPT
+	SELECT ffriend_id FROM friends WHERE fuser_id = 1)
+group by post_user_id
+ORDER BY total DESC
+LIMIT 10;
+
+SELECT post_user_id, SUM(post_sigma_comment*5 + post_sigma_like) AS total 
+FROM posts 
+WHERE post_data > '2011-01-01' AND post_data < '2013-01-01' AND post_user_id  IN (
+	SELECT ffriend_id FROM friends WHERE fuser_id = 1)
+group by post_user_id
+ORDER BY total DESC
+LIMIT 10;
+
+UPDATE users SET ufname='Luiz Fernando' WHERE uid = 4;
