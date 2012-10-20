@@ -65,19 +65,16 @@ public class doEstatistica extends HttpServlet {
             
             DateFormat formatar = new SimpleDateFormat("yyyy/MM/dd");
             
-            
+            int _amigo = Integer.parseInt(request.getParameter("amigo"));        
             try  
             {
                 java.sql.Date start = new java.sql.Date(formatar.parse(inicio).getTime());
                 java.sql.Date end = new java.sql.Date(formatar.parse(fim).getTime());
                 
-                ResultSet todos = _estatisticaDao.getPosts(end);
-                while (todos.next()){
-                    out.println(todos.getString("post_content"));
-                }
                 
                 request.setAttribute("startDate", start);
                 request.setAttribute("endDate", end);
+                request.setAttribute("amigo", _amigo);
                 RequestDispatcher rd = request.getRequestDispatcher("resultadoEstatistica.jsp");
                 rd.forward(request,response);
 

@@ -52,15 +52,56 @@ SELECT * FROM posts where post_user_id = 4;
 
 --por dia no periodo ??w
 SELECT post_user_id, post_content, post_data, post_id, SUM(post_sigma_comment*5 + post_sigma_like) as total FROM (
-SELECT post_id, post_data, post_user_id, post_content, post_sigma_comment, post_sigma_like FROM posts where post_data > '2012-10-12' AND post_data < date '2012-10-12' + integer '1' AND post_user_id IN (
+SELECT post_id, post_data, post_user_id, post_content, post_sigma_comment, post_sigma_like FROM posts where date_trunc('day', post_data) = '2012-10-12' AND post_user_id IN (
 SELECT fuser_id FROM friends WHERE ffriend_id = 1)
 ) j
 GROUP BY post_data, post_user_id, post_id, post_content
 ORDER BY total DESC
+LIMIT 3;
+
+
+SELECT post_user_id, post_content, post_data, post_id, SUM(post_sigma_comment*5 + post_sigma_like) as total 
+FROM posts 
+WHERE post_user_id = 1
+GROUP BY post_data, post_user_id, post_id, post_content
+ORDER BY total DESC
+
+SELECT AVG(post_sigma_comment*5 + post_sigma_like) as total 
+FROM posts 
+WHERE post_user_id = 1
+
+SELECT AVG(post_sigma_comment*5 + post_sigma_like) as total 
+FROM posts 
+WHERE post_user_id = 1 AND post_data > '2012-01-01' AND post_data < '2012-12-12'
+
+SELECT A
 
 SELECT date '2012-12-23' + integer '1' as nova_data
 SELECT date '2012-12-23' as nova_data
 
+SELECT * from posts
+
+SELECT * FROM posts WHERE date_trunc('day', post_data) 
+
+SELECT COUNT (*) as total_posts FROM posts WHERE post_user_id = 2 AND date_trunc('day', post_data) = '2012-10-12'
+
+SELECT COUNT (*) as total_posts FROM posts WHERE post_user_id = 2 AND date_trunc('day', post_data) = '2012-10-12'
+
+SELECT COUNT (*) as total FROM likes WHERE like_user_id = ? AND date_trunc('day', like_data) = ? AND like_post_id IN (
+SELECT post_id FROM posts WHERE post_user_id = ?)
+
+
+	SELECT DISTINCT date_trunc('day', post_data) AS datas 
+	FROM posts WHERE post_data > '2012-01-01' AND post_data < '2012-12-12' AND post_user_id IN(
+		SELECT fuser_id FROM friends WHERE ffriend_id = 1)
+
+SELECT DISTINCT date_trunc('day', post_data) as datas FROM posts WHERE post_user_id = ?  AND post_data > ? AND post_data < ?
+UNION
+SELECT DISTINCT date_trunc('day', like_data) as datas FROM likes WHERE like_user_id = ? AND like_data > ? AND like_data < ?
+UNION 
+SELECT DISTINCT date_trunc('day', comment_data) as datas FROM posts_comments WHERE comment_user_id = ? AND comment_data > ? AND comment_data < ?
+
+DROP TABLE git_posts
 
 CREATE TABLE posts
 (
@@ -72,13 +113,47 @@ CREATE TABLE posts
 	post_data TIMESTAMP DEFAULT now()
 );
 
-CREATE TABLE posts_comments
+SELECT * from posts 
+SELECT * from git_posts 
+
+UPDATE posts SET post_content = 'roberto carlos' WHERE post_id = 7
+
+DELETE FROM postg WHERE post_id = 21 
+
+
+
+CREATE TRIGGER historico_posts AFTER DELETE OR UPDATE
+ON posts FOR EACH ROW
+EXECUTE PROCEDURE make_historico();
+
+DROP TRIGGER historico_posts ON posts
+
+
+CREATE OR REPLACE FUNCTION make_historico()
+RETURNS trigger LANGUAGE plpgsql
+AS $$
+begin
+ INSERT INTO git_posts (git_post_id, git_user_id, git_content) VALUES (old.post_id, old.post_user_id, old.post_content);
+ return old;
+ END; $$;
+
+ CREATE TABLE log
+ (
+	log_id SERIAL PRIMARY KEY,
+	log_user_id INTEGER REFERENCES users(uid),
+	log_user_fname VARCHAR(60),
+	log_user_lname VARCHAR(60),
+	log_post_data TIMESTAMP,
+	log_denovo boolean default false
+ );
+
+CREATE TABLE git_posts
 (
-	comment_id SERIAL PRIMARY KEY,
-	comment_user_id INTEGER REFERENCES users(uid),
-	comment_post_id INTEGER REFERENCES posts(post_id),
-	comment_content TEXT NOT NULL,
-	comment_data TIMESTAMP DEFAULT now()
+	git_id SERIAL PRIMARY KEY,
+	git_post_id INTEGER,
+	git_user_id INTEGER REFERENCES users(uid),
+	git_content TEXT NOT NULL,
+	git_data TIMESTAMP DEFAULT now()
 );
 
 CREATE TABLE posts_comments
@@ -97,6 +172,8 @@ CREATE TABLE likes
 	like_post_id INTEGER REFERENCES posts(post_id) ON DELETE CASCADE,
 	like_data TIMESTAMP DEFAULT now()
 );
+
+SELECT * FROM posts WHERE 
 
 CREATE TABLE image_post
 (
@@ -223,4 +300,40 @@ group by post_user_id
 ORDER BY total DESC
 LIMIT 10;
 
+SELECT * FROM log
+
+log_user_id INTEGER REFERENCES users(uid),
+	log_user_fname VARCHAR(60),
+	log_user_lname VARCHAR(60),
+	log_post_data TIMESTAMP,
+	log_denovo boolean default false
+	
+INSERT INTO log (log_user_id, log_user_fname, log_user_lname, log_post_data) (
+SELECT u.uid, u.ufname, u.ulname, p.post_data
+	FROM posts p JOIN users u 
+	ON p.post_user_id = u.uid 
+	AND p.post_content LIKE '%prof%' 
+	AND p.post_data > '2012-01-01' 
+	AND p.post_data < '2012-12-12')
+
+UPDATE log SET log_denovo = true WHERE post
+	 (
+SELECT DISTINCT case WHEN post_user_id=1 THEN 'me' ELSE 'other' END from posts where post_user_id = 1)  
+
+
+
+
+
+SELECT * from posts where post_content like '%prof%'
+
 UPDATE users SET ufname='Luiz Fernando' WHERE uid = 4;
+
+select procurar('%prof%');
+
+DROP FUNCTION procurar(TEXT)
+
+CREATE OR REPLACE FUNCTION procurar(word TEXT)
+RETURNS 
+SELECT * FROM posts WHERE post_content LIKE $1;
+$$ LANGUAGE SQL;
+

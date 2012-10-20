@@ -87,6 +87,110 @@
             } catch (Exception e) {
                 out.println(e.getMessage());
             }
-        %>        
+        %>
+
+        <h3> Intervalo de datas </h3>
+        <%
+            ResultSet _datesBetween = null;
+            ResultSet _threePerDay = null;
+            try {
+                _datesBetween = _estatisticaDao.datesBetween(startDate, endDate, user_id);
+
+                while (_datesBetween.next()) {
+                    out.println("<h4>" + _datesBetween.getDate("datas") + "</h4>");
+                    _threePerDay = _estatisticaDao.threePerDay(_datesBetween.getDate("datas"), user_id);
+                    while (_threePerDay.next()) {
+                        if (_threePerDay.getInt("total") > 0) {
+                            int _uid = _threePerDay.getInt("post_user_id");
+                            out.println(_threePerDay.getInt("total") + " pontos - ");
+                            out.println("<a href=publicProfile.jsp?" + _uid + "> "
+                                    + _user.getNomeCompletoDao(_uid) + "</a>");
+                            out.println(_threePerDay.getString("post_content") + "<br>");
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                out.println(e.getMessage());
+            }
+        %>
+
+        <h3> Meus posts </h3>
+        <%
+            ResultSet _myPosts = null;
+            try {
+                _myPosts = _estatisticaDao.myPosts(startDate, endDate, user_id);
+                while (_myPosts.next()) {
+                    out.println(_myPosts.getInt("total") + " pontos - ");
+                    out.println(_myPosts.getString("post_content") + "<br>");
+                }
+
+                _myPosts = _estatisticaDao.allTimeAvg(user_id);
+                while (_myPosts.next()) {
+                    out.println("<br>Média de pontos de todos meus posts: " + _myPosts.getInt("media_geral") + "<br>");
+                }
+                _myPosts = _estatisticaDao.periodAvg(startDate, endDate, user_id);
+                while (_myPosts.next()) {
+                    out.println("<br>Média de pontos dos meus posts no período: " + _myPosts.getInt("media_periodo") + "<br>");
+                }
+
+            } catch (Exception e) {
+                out.println(e.getMessage());
+            }
+        %>
+
+        <h3> Amigo selecionado </h3>
+        Selecionado: 
+        <%
+            int _amigo = Integer.parseInt(request.getParameter("amigo"));
+
+            out.println("<a href=publicProfile.jsp?" + _amigo + "> "
+                    + _user.getNomeCompletoDao(_amigo) + "</a>");
+
+            try {
+                ResultSet _datesBetweenForAll = null;
+                _datesBetweenForAll = _estatisticaDao.datesBetweenForAll(startDate, endDate, _amigo);
+
+                ResultSet _postsThatDay = null;
+                ResultSet _likesThatDay = null;
+                ResultSet _likesToMeThatDay = null;
+                ResultSet _commentsThatDay = null;
+                ResultSet _commentsToMeThatDay = null;
+                   
+                while (_datesBetweenForAll.next()) {
+                    java.sql.Date dia = _datesBetweenForAll.getDate("datas");
+                    out.println("<h4>" + dia + "</h4>");
+                    
+                    _postsThatDay = _estatisticaDao.postsThatDay(dia, _amigo  );
+                    _likesThatDay = _estatisticaDao.likesThatDay(dia, _amigo  );
+                    _likesToMeThatDay = _estatisticaDao.likesToMeThatDay(dia, _amigo, user_id);
+                    _commentsThatDay = _estatisticaDao.commentsThatDay(dia, _amigo  );
+                    _commentsToMeThatDay = _estatisticaDao.commentsToMeThatDay(dia, _amigo, user_id);
+
+                    if(_postsThatDay.next()){
+                        out.println(_postsThatDay.getInt("total_posts") + " posts" + "<br>");
+                    }
+                    if(_likesThatDay.next()){
+                        out.println(_likesThatDay.getInt("total_likes") + " curtir" + "<br>");
+                    }
+                    if(_commentsThatDay.next()){
+                        out.println(_commentsThatDay.getInt("total_comments") + " comentário" + "<br>");
+                    }
+                    if(_likesToMeThatDay.next()){
+                        out.println("<br>" + _likesToMeThatDay.getInt("likes_me") + " curtir em meus posts" + "<br>");
+                    }
+                    if(_commentsToMeThatDay.next()){
+                        out.println(_commentsToMeThatDay.getInt("comments_me") + " comentário em meus posts" + "<br>");
+                    }
+                  
+                }
+            } catch (Exception e) {
+                out.println(e.getMessage());
+            }
+
+
+
+        %>
+
+
     </body>
 </html>
