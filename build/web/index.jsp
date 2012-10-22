@@ -21,8 +21,6 @@ Existe algum css nessa pagina por isso alguns divs.
     Enumeration e = session.getAttributeNames();
     if (e.hasMoreElements()) response.sendRedirect("profile.jsp");      
 } 
-// caso usuario esteja logado esse if o redireciona para profile.jsp, erro quando sessão expirou.
-// TODO: verificar melhor modo de redireciona-lo para profile.jsp mesmo quando sessao velha.
 %>
 
 <html>

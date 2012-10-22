@@ -8,19 +8,23 @@
 <%@page import="friends.FriendDao"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<% int user_id = 0;
+    if (session.getAttribute("user_id") == null) {
+        response.sendRedirect("index.jsp");
+    } else {
+        user_id = Integer.parseInt(session.getAttribute("user_id").toString());
+    }%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Grupos</title>
     </head>
     <body>
         <p style="text-align: right"><a href="friendsManager.jsp"> Gerenciar Amigos </a></p>
 
         
         <%
-            int user_id = Integer.parseInt(session.getAttribute("user_id").toString());
-            
             String queryString = request.getQueryString();
             int _gid = Integer.parseInt(queryString);
             

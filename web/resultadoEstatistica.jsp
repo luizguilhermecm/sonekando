@@ -9,7 +9,12 @@
 <%@page import="estatistica.estatisticaDao"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<% int user_id = Integer.parseInt(session.getAttribute("user_id").toString());%>
+<% int user_id = 0;
+    if (session.getAttribute("user_id") == null) {
+        response.sendRedirect("index.jsp");
+    } else {
+        user_id = Integer.parseInt(session.getAttribute("user_id").toString());
+    }%>
 <% UserDao _user = new UserDao();%>
 <% FriendDao _friendDao = new FriendDao();%>
 <% estatisticaDao _estatisticaDao = new estatisticaDao();%>
@@ -19,22 +24,24 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Estatísticas</title>
     </head>
     <% java.sql.Date startDate = (java.sql.Date) request.getAttribute("startDate");
         java.sql.Date endDate = (java.sql.Date) request.getAttribute("endDate");
     %>
     <body>
+        <p style="text-align: right"><a href="profile.jsp"> Minha Cama </a></p>
+
         <h1>Estatísticas</h1>
         <h2><% out.println("De: " + startDate + " Até: " + endDate);%></h2>
 
-        <h3>+ Posts por grupo:</h3>
+        <h2>Top 3 postadores por grupo: </h3>
         <%
             ResultSet grupos = _friendDao.getGroups(user_id);
             ResultSet morePerGroup = null;
             while (grupos.next()) {
                 try {
-                    out.println("<h2>" + grupos.getString("gname") + "</h2>");
+                    out.println("<h3>" + grupos.getString("gname") + "</h3>");
                     int _gid = grupos.getInt("gid");
                     morePerGroup = _estatisticaDao.morePerGroup(startDate, endDate, _gid);
                     while (morePerGroup.next()) {
@@ -51,7 +58,7 @@
 
         %>
 
-        <h3>Amigos mais curtidos/comentados (em ordem de pontuação <a href="asdf.jsp">saiba mais</a>)</h3>
+        <h2>Amigos mais curtidos/comentados (em ordem de pontuação <a href="saibamais.jsp">saiba mais</a>)</h2>
         <%
             ResultSet moreInfluent = null;
             try {
@@ -70,7 +77,7 @@
             }
         %>
 
-        <h3>Usuários mais curtidos/comentados (em ordem de pontuação <a href="asdf.jsp">saiba mais</a>)</h3>
+        <h2>Usuários mais curtidos/comentados (em ordem de pontuação <a href="saibamais.jsp">saiba mais</a>)</h2>
         <%
             ResultSet moreInfluentExcept = null;
             try {
@@ -89,7 +96,7 @@
             }
         %>
 
-        <h3> Intervalo de datas </h3>
+        <h2>Top 3 posts por dia mais curtidos/comentados de amigos</h2>
         <%
             ResultSet _datesBetween = null;
             ResultSet _threePerDay = null;
@@ -114,7 +121,7 @@
             }
         %>
 
-        <h3> Meus posts </h3>
+        <h2> Meus posts </h2>
         <%
             ResultSet _myPosts = null;
             try {
@@ -138,11 +145,14 @@
             }
         %>
 
-        <h3> Amigo selecionado </h3>
+        <h2> Amigo selecionado </h2>
         Selecionado: 
         <%
             int _amigo = Integer.parseInt(request.getParameter("amigo"));
-
+            if (_amigo == 0){
+                out.println("nenhum amigo selecionado :) (provavelmente você está solteiro :P)");
+            }
+                       else {
             out.println("<a href=publicProfile.jsp?" + _amigo + "> "
                     + _user.getNomeCompletoDao(_amigo) + "</a>");
 
@@ -186,7 +196,7 @@
             } catch (Exception e) {
                 out.println(e.getMessage());
             }
-
+                       }
 
 
         %>

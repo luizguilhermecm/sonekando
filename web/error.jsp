@@ -15,5 +15,6 @@ Pagina de erro 404 ou seja o erro padrao para paginas que nao existem.
     </head>
     <body>
         <h1>Você só pode estar dormindo!</h1>
+        <a href="index.jsp"> Sonekando </a>
     </body>
 </html>

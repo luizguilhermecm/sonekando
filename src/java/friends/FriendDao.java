@@ -29,7 +29,7 @@ public class FriendDao {
 
     public void Desconectar() throws SQLException {
         conn.close();
-       // pstm.close();
+        // pstm.close();
     }
 
     public int getFuserIdDao(int _fid) {
@@ -65,20 +65,20 @@ public class FriendDao {
     }
 
     public int getFID(int _fuser_id, int _ffriend_id) throws SQLException {
-            Conectar();
-            query = "SELECT fid FROM friends WHERE fuser_id=? AND ffriend_id=?;";
-            pstm = conn.prepareStatement(query);
-            pstm.setInt(1, _fuser_id);
-            pstm.setInt(2, _ffriend_id);
-            ResultSet rs = pstm.executeQuery();
-            Desconectar();
+        Conectar();
+        query = "SELECT fid FROM friends WHERE fuser_id=? AND ffriend_id=?;";
+        pstm = conn.prepareStatement(query);
+        pstm.setInt(1, _fuser_id);
+        pstm.setInt(2, _ffriend_id);
+        ResultSet rs = pstm.executeQuery();
+        Desconectar();
 
-            if (rs.next()) {
-                return rs.getInt("fid");
-            }
-            return 0;
+        if (rs.next()) {
+            return rs.getInt("fid");
+        }
+        return 0;
     }
-    
+
     public int getFfriendIdDao(int _fid) {
         try {
             Conectar();
@@ -193,10 +193,10 @@ public class FriendDao {
         pstm = conn.prepareStatement(query);
         pstm.setInt(1, _gid);
         executeUpdate = pstm.executeUpdate();
-        
+
         Desconectar();
     }
-    
+
     public ResultSet getGroups(int _guser_id) throws SQLException {
         Conectar();
         query = "SELECT gid, gname FROM groups WHERE guser_id=?;";
@@ -241,8 +241,8 @@ public class FriendDao {
 
         return rs;
     }
-    
-    public void GetOutOfGroup (int _gid, int _fid) throws SQLException{
+
+    public void GetOutOfGroup(int _gid, int _fid) throws SQLException {
         Conectar();
         query = "DELETE FROM friend_group WHERE group_id=? AND friendship_id=?";
         pstm = conn.prepareStatement(query);
@@ -250,45 +250,45 @@ public class FriendDao {
         pstm.setInt(2, _fid);
         int executeUpdate = pstm.executeUpdate();
     }
-    
-    public String getGroupName (int _gid) throws SQLException{
+
+    public String getGroupName(int _gid) throws SQLException {
         Conectar();
         query = "SELECT gname FROM groups WHERE gid = ?";
         pstm = conn.prepareStatement(query);
         pstm.setInt(1, _gid);
         ResultSet rs = pstm.executeQuery();
-        
-        if (rs.next())
+
+        if (rs.next()) {
             return rs.getString("gname");
-        
-        else return "Try Again";
-    }    
-    
-    public ResultSet RecomendsFriends (int _uid) throws SQLException{
+        } else {
+            return "Try Again";
+        }
+    }
+
+    public ResultSet RecomendsFriends(int _uid) throws SQLException {
         Conectar();
         query = ""
-+ "SELECT ffriend_id, "
-+ "       Count(*) "
-+ "FROM   friends "
-+ "WHERE  fuser_id IN (SELECT ffriend_id "
-+ "                     FROM   friends "
-+ "                     WHERE  fuser_id = ?) "
-+ "       AND ffriend_id NOT IN (SELECT ffriend_id "
-+ "                            FROM   friends "
-+ "                            WHERE  fuser_id = ?) "
-+ "       AND ffriend_id <> ? "
-+ "GROUP  BY ffriend_id "
-+ "ORDER  BY Count(*) DESC "
-+ "LIMIT  10 ";
-        
+                + "SELECT ffriend_id, "
+                + "       Count(*) "
+                + "FROM   friends "
+                + "WHERE  fuser_id IN (SELECT ffriend_id "
+                + "                     FROM   friends "
+                + "                     WHERE  fuser_id = ?) "
+                + "       AND ffriend_id NOT IN (SELECT ffriend_id "
+                + "                            FROM   friends "
+                + "                            WHERE  fuser_id = ?) "
+                + "       AND ffriend_id <> ? "
+                + "GROUP  BY ffriend_id "
+                + "ORDER  BY Count(*) DESC "
+                + "LIMIT  10 ";
+
         pstm = conn.prepareStatement(query);
         pstm.setInt(1, _uid);
-        pstm.setInt(2, _uid);        
+        pstm.setInt(2, _uid);
         pstm.setInt(3, _uid);
-        
+
         ResultSet rs = pstm.executeQuery();
         return rs;
-        
-    } 
-    
+
+    }
 }

@@ -13,16 +13,19 @@
 <%@page import="users.*" %>
 <%@page import="java.sql.*" %>
 
-<%-- FIX: Se usuário não estiver logado redirecionar para index. Ainda não sei como fazer --%>
-<%-- TODO: ver como alguem fez para verificar se sessão é invalida e adaptar aqui --%>
-<% int user_id = Integer.parseInt(session.getAttribute("user_id").toString()); %>
-<% UserDao _user = new UserDao(); %>
+<% int user_id = 0;
+    if (session.getAttribute("user_id") == null) {
+        response.sendRedirect("index.jsp");
+    } else {
+        user_id = Integer.parseInt(session.getAttribute("user_id").toString());
+    }%>
+<% UserDao _userDao = new UserDao();%>
 <% FriendDao _friendDao = new FriendDao(); %>
 
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title> <% String nome = _user.getNomeDao(user_id); out.print(nome);%>   </title>
+        <title> <% String nome = _userDao.getNomeDao(user_id); out.print(nome);%>   </title>
 <style type="text/css">
 #profile
 {
@@ -40,6 +43,14 @@ float:right;
     margin-bottom: 10px;
     margin-top: 10px;
     border-style: solid;
+    border-width: thin;
+    max-width: 90%;
+}
+#inside
+{
+    margin-bottom: 10px;
+    margin-top: 10px;
+    border-style:  groove;
     border-width: thin;
     max-width: 90%;
 }
@@ -63,9 +74,10 @@ float:right;
         
         <br>
         <a href="estatisticas.jsp">Estatisticas</a>
-        <br>
+        <br><br>
+        <a href="friendsManager.jsp"> Gerenciar Amigos </a> 
         <h2> Meus Amigos: </h2>
-        <a href="friendsManager.jsp"> Gerenciar Amigos </a> <br><br>
+        
         <%
             ResultSet _fresult = _friendDao.getAmigosDao(user_id);
             int _ffriend_id;
@@ -73,14 +85,14 @@ float:right;
                 _ffriend_id = _fresult.getInt("ffriend_id");
                 
                 out.println("<a href=publicProfile.jsp?" + _ffriend_id + "> "
-                     + _user.getNomeCompletoDao(_ffriend_id) + "</a>" + "<br>");
+                     + _userDao.getNomeCompletoDao(_ffriend_id) + "</a>" + "<br>");
             }
         %>
         
         
         <h2> Aceitar Amigos: </h2>
         <%
-        ResultSet _presult = _user.getPendenciasDao(user_id);
+        ResultSet _presult = _userDao.getPendenciasDao(user_id);
         int uid_pendente;
         int _fuser_id;
 
@@ -88,7 +100,7 @@ float:right;
             uid_pendente = _presult.getInt("fid");
             _fuser_id = _presult.getInt("fuser_id");
             out.print( "<a href=publicProfile.jsp?" + _fuser_id + "> " 
-                    + _user.getNomeCompletoDao(_fuser_id) + "</a><br>");
+                    + _userDao.getNomeCompletoDao(_fuser_id) + "</a><br>");
             out.print( "<form name=input method=post action=doAcceptFriend>"
                      + "<input type=hidden name=aceitou value=" + uid_pendente + ">"
                      + "<input type=submit value=Aceitar></form>");
@@ -108,39 +120,58 @@ float:right;
             _friend_id = _recomends.getInt("ffriend_id");
             _count = _recomends.getByte("count");
             out.print( "<a href=publicProfile.jsp?" + _friend_id + "> " 
-                    + _user.getNomeCompletoDao(_friend_id) + "</a>(" +_count + ")<br>");
+                    + _userDao.getNomeCompletoDao(_friend_id) + "</a>(" +_count + ")<br>");
          
         }
         %>
         
         <br><br>
         <a href="doLogout">Logout</a>
+        <%
+            if (user_id == 1){
+        %>
+           <br><br>
+        <a href="offensiveContent.jsp">Conteudo Ofensivo</a>
+        <%
+            }
+        %>
         </div>
         
         <div id="content">
             <% PostDao _postDao = new PostDao(); %>
             
+            <!-- TODO: excluir servlet doNewPost -->
             <h2>Posts</h2>
-            <form name="input" method="post" action="doNewPost">
-                <textarea name="content" cols="70%" rows=3 /></textarea><br>
-                <input type="submit" value="Postar" />
+            <form name="input" enctype="multipart/form-data" method="post" action="doUploadImagePost">
+                <textarea name="postagem" cols="70%" rows=3 /></textarea><br>
+            <input type="file" name="file" /><br>
+            <input type="file" name="file" /><br>
+            <input type="file" name="file" /><br>
+                <input type="submit" value="Postar/image" />
             </form>
             
-        <form name="input" enctype="multipart/form-data" method="post" action="doUploadProfileImage">
-            <input name="file" type="file" /><br />
-            <input type="submit" value="Enviar Arquivo">
-        </form>
 
         <%
             ResultSet _rsPost = _postDao.SelectPosts(user_id);
             ResultSet _rsComment = null;
+            ResultSet _images = null;
             while (_rsPost.next()) {
-                out.println(_user.getNomeCompletoDao(_rsPost.getInt("post_user_id")) + ":<br>");
                 out.println("<div id=posts>");
-                out.println(_rsPost.getString("post_content"));
+
+                               out.println(_userDao.getNomeCompletoDao(_rsPost.getInt("post_user_id")) + ":<br>");
+                out.println("<div id=inside>");
+                out.println(_rsPost.getString("post_content") + "<br><br>");
+                _images = _postDao.listImages(_rsPost.getInt("post_id"));
+                while (_images.next()){
+                    %>
+                    <img src="doDownloadImagePost?<%out.print(_images.getInt("image_id"));%>" style="width: 400px">
+                    <%
+                    }
+                    
+                
          %>
          <form name="input" method="post" action="doLikePost">
-                <input type=hidden name=post_id_liked value=<%out.println(_rsPost.getInt("post_id"));%> >
+                <input type=hidden name=post_id_liked value=<%out.println(_rsPost.getInt("post_id"));%> />
                 <input type="submit" value="Zzz" />
          </form>
                 
@@ -167,7 +198,7 @@ float:right;
                 
                 while (_rsComment.next()) {
                     out.println("<div id=posts>");                  
-                    out.println(_user.getNomeCompletoDao(_rsComment.getInt("comment_user_id")) + ":<br>");
+                    out.println(_userDao.getNomeCompletoDao(_rsComment.getInt("comment_user_id")) + ":<br>");
                     out.println(_rsComment.getString("comment_content"));
                     out.println("</div>");
 
@@ -182,7 +213,9 @@ float:right;
             </form>
             
         <%
-                   }
+                out.println("</div>");
+
+                          }
         %>
         </div>
 

@@ -2,9 +2,8 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package estatistica;
 
-import friends.FriendDao;
+import estatistica.estatisticaDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
@@ -12,7 +11,6 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -21,13 +19,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import users.UserDao;
 
 /**
  *
  * @author snk
  */
-public class doEstatistica extends HttpServlet {
+public class doOffensive extends HttpServlet {
 
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -37,7 +34,7 @@ public class doEstatistica extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, SQLException, ParseException {
+            throws ServletException, IOException, ParseException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
@@ -45,8 +42,8 @@ public class doEstatistica extends HttpServlet {
             int user_id = Integer.parseInt(session.getAttribute("user_id").toString());
             
             estatisticaDao _estatisticaDao = new estatisticaDao();
-            FriendDao _friendDao = new FriendDao();
-            UserDao _userDao = new UserDao();
+            
+            String offensiveWord = request.getParameter("offensiveWord");
             
             String inicio;
             inicio = request.getParameter("deAno") + "/"
@@ -61,7 +58,7 @@ public class doEstatistica extends HttpServlet {
             
             DateFormat formatar = new SimpleDateFormat("yyyy/MM/dd");
             
-            int _amigo = Integer.parseInt(request.getParameter("amigo"));        
+            
             try  
             {
                 java.sql.Date start = new java.sql.Date(formatar.parse(inicio).getTime());
@@ -75,25 +72,28 @@ public class doEstatistica extends HttpServlet {
                         out.println(e.getMessage());
                     }
                 }
+      
+                try{
+                ResultSet _offensive = _estatisticaDao.offensiveContent(start, end, offensiveWord);
                 
-                
-                request.setAttribute("startDate", start);
-                request.setAttribute("endDate", end);
-                request.setAttribute("amigo", _amigo);
-                RequestDispatcher rd = request.getRequestDispatcher("resultadoEstatistica.jsp");
+                request.setAttribute("ResultSet", _offensive);
+                RequestDispatcher rd = request.getRequestDispatcher("offensiveContent.jsp");
                 rd.forward(request,response);
 
-
+               
+                }catch (Exception e){
+                    out.println(e.getMessage());
+                }
+                
             } catch (ParseException ex) {
                 throw new RuntimeException(ex);
             }           
 
             //response.sendRedirect("estatisticas.jsp");
         
-        }finally {            
+        } finally {            
             out.close();
         }
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -110,11 +110,11 @@ public class doEstatistica extends HttpServlet {
         try {
             try {
                 processRequest(request, response);
-            } catch (ParseException ex) {
-                Logger.getLogger(doEstatistica.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(doOffensive.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(doEstatistica.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(doOffensive.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -131,11 +131,11 @@ public class doEstatistica extends HttpServlet {
         try {
             try {
                 processRequest(request, response);
-            } catch (ParseException ex) {
-                Logger.getLogger(doEstatistica.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(doOffensive.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(doEstatistica.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(doOffensive.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

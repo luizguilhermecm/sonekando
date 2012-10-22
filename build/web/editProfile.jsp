@@ -7,7 +7,12 @@
 <%@page import="users.Users"%>
 <%@page import="users.UserDao"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<% int user_id = Integer.parseInt(session.getAttribute("user_id").toString()); %>
+<% int user_id = 0;
+    if (session.getAttribute("user_id") == null) {
+        response.sendRedirect("index.jsp");
+    } else {
+        user_id = Integer.parseInt(session.getAttribute("user_id").toString());
+    }%>
 <% UserDao _user = new UserDao(); %>
 
 <!DOCTYPE html>

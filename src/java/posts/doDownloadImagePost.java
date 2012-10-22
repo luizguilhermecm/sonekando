@@ -5,26 +5,23 @@
 package posts;
 
 import images.ImageDao;
+import images.doDownloadProfileImage;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Iterator;
-import java.util.List;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.apache.tomcat.util.http.fileupload.FileItem;
-import org.apache.tomcat.util.http.fileupload.FileItemFactory;
-import org.apache.tomcat.util.http.fileupload.FileUploadException;
-import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
-import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 
 /**
  *
  * @author snk
  */
-public class doUploadImagePost extends HttpServlet {
+public class doDownloadImagePost extends HttpServlet {
 
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -34,12 +31,13 @@ public class doUploadImagePost extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            
-        } finally {  
+
+        } finally {
+            out.close();
         }
     }
 
@@ -54,7 +52,23 @@ public class doUploadImagePost extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            HttpSession session = request.getSession();
+            String queryString = request.getQueryString();
+            // TODO: enviar doPublicProfile?id=3 .. tentar pegar pela variavel
+            int _image_id = Integer.parseInt(queryString);
+
+            PostDao _postDao = new PostDao();
+            byte[] _image;
+            _image = _postDao.DownloadImage(_image_id);
+
+            response.setContentType("image/jpeg");
+            response.getOutputStream().write(_image);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(doDownloadImagePost.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     /** 
@@ -67,49 +81,10 @@ public class doUploadImagePost extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
-        
-        PrintWriter out = response.getWriter();
-            
-        DiskFileItemFactory factory = new DiskFileItemFactory();
-        factory.setSizeThreshold(40969);
-
-        ServletFileUpload upload = new ServletFileUpload(factory);
-        
-        try
-        {
-            HttpSession session = request.getSession();
-            ImageDao _image = new ImageDao();
-            PostDao _postDao = new PostDao();
-            int user_id = Integer.parseInt(session.getAttribute("user_id").toString());
-            String content = " ";
-            byte[] imageUpload = null;
-            int size = 0;
-            int post_id = 0;
-            List items = upload.parseRequest(request);
-            Iterator iter = items.iterator();
-            while (iter.hasNext()){
-                FileItem item = (FileItem) iter.next();
-                
-                if (item.isFormField()){
-                        content = item.getString();
-                        post_id = _postDao.NewPost(user_id, content);
-
-                } 
-                if (!item.isFormField()) {
-                    size = (int) item.getSize();
-                    if (size > 0) {
-                        imageUpload = item.get();
-                        _postDao.UploadImage(user_id, post_id, imageUpload, size);
-
-                    }
-                }
-            }
-            response.sendRedirect("profile.jsp");
-            
-            
-        } catch (Exception ex) {
-            out.println(ex.getMessage());
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(doDownloadProfileImage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

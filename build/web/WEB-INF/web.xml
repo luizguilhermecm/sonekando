@@ -107,6 +107,26 @@
         <servlet-name>NewServlet</servlet-name>
         <servlet-class>estatistica.NewServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>doOffensive</servlet-name>
+        <servlet-class>doOffensive</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>doDownloadImagePost</servlet-name>
+        <servlet-class>posts.doDownloadImagePost</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>doNewCommentPublicProfile</servlet-name>
+        <servlet-class>posts.doNewCommentPublicProfile</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>doGetAllOffensive</servlet-name>
+        <servlet-class>doGetAllOffensive</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>doLikePublicProfile</servlet-name>
+        <servlet-class>posts.doLikePublicProfile</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>doLogout</servlet-name>
         <url-pattern>/doLogout</url-pattern>
@@ -210,6 +230,26 @@
     <servlet-mapping>
         <servlet-name>NewServlet</servlet-name>
         <url-pattern>/NewServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>doOffensive</servlet-name>
+        <url-pattern>/doOffensive</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>doDownloadImagePost</servlet-name>
+        <url-pattern>/doDownloadImagePost</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>doNewCommentPublicProfile</servlet-name>
+        <url-pattern>/doNewCommentPublicProfile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>doGetAllOffensive</servlet-name>
+        <url-pattern>/doGetAllOffensive</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>doLikePublicProfile</servlet-name>
+        <url-pattern>/doLikePublicProfile</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

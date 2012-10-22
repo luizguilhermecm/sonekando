@@ -37,9 +37,11 @@ public class doNewGroup extends HttpServlet {
             HttpSession session = request.getSession();
             int user_id = Integer.parseInt(session.getAttribute("user_id").toString());
             FriendDao _group = new FriendDao();
-            
+            try{
             _group.NewGroup(user_id, request.getParameter("newgroup"));
-            
+            }catch (Exception e){
+                out.println(e.getMessage());
+            }
             
             response.sendRedirect("friendsManager.jsp");
         } finally {            

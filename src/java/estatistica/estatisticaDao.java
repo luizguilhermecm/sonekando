@@ -340,4 +340,50 @@ public class estatisticaDao {
         Desconectar();
         return rs;
     }
+    
+    public ResultSet offensiveContent(Date inicio, Date fim, String palavra) throws SQLException {
+        Conectar();
+        ResultSet rs = null;
+        query = "SELECT * FROM offensive(?,?,?);";
+        pstm = conn.prepareStatement(query);
+        pstm.setString(1, palavra);
+        pstm.setDate(2, inicio);
+        pstm.setDate(3, fim);
+        rs = pstm.executeQuery();
+        Desconectar();        
+        return rs;
+    }
+
+    public ResultSet getAllOffensiveContent() throws SQLException {
+        Conectar();
+        ResultSet rs = null;
+        query = "SELECT * FROM log;";
+        pstm = conn.prepareStatement(query);
+        rs = pstm.executeQuery();
+        Desconectar();        
+        return rs;
+    }    
+    
+    public  java.sql.Date Now() throws SQLException {
+        Conectar();
+        ResultSet rs = null;
+        query = "SELECT (date 'now()' + integer '1') AS hoje;";
+
+        pstm = conn.prepareStatement(query);
+        rs = pstm.executeQuery();
+        Desconectar();
+        rs.next();
+        return rs.getDate("hoje");
+    }
+    
+    public java.sql.Date WeekLess() throws SQLException{
+        Conectar();
+        ResultSet rs = null;
+        query = "SELECT date_trunc('day', (date 'now()' - integer '7')) AS week;";
+        pstm = conn.prepareStatement(query);
+        rs = pstm.executeQuery();
+        Desconectar();
+        rs.next();
+        return rs.getDate("week");
+    }
 }

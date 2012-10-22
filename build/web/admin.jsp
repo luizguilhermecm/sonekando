@@ -19,6 +19,8 @@ Retorna todas as tuplas em uma tabela e lista elas em uma pagina HTML.
                 Simple Database JSP Example
         </h2>
 
+        
+    
         <%@ page import="java.sql.*" %>
 
         <%!

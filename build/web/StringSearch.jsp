@@ -7,13 +7,17 @@
 <%@page import="java.sql.ResultSet"%>
 <%@page import="users.UserDao"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<% int user_id = Integer.parseInt(session.getAttribute("user_id").toString()); %>
-
+<% int user_id = 0;
+    if (session.getAttribute("user_id") == null) {
+        response.sendRedirect("index.jsp");
+    } else {
+        user_id = Integer.parseInt(session.getAttribute("user_id").toString());
+    }%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Buscar Amigo</title>
     </head>
     <body>
         <p style="text-align: right"><a href="profile.jsp"> Minha Cama </a></p>

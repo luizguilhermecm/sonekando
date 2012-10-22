@@ -42,9 +42,11 @@ public class doDeleteFriend extends HttpServlet {
             FriendDao _deletar = new FriendDao();
             _deletar.DeletarAmigo(user_id, _ffriend_id);
                     
-            response.sendRedirect("profile.jsp");
+            response.sendRedirect("friendsManager.jsp");
            
-        } finally {     
+        } catch (Exception e){
+            out.println(e.getMessage());
+        }finally {     
             out.close();
         }
     }

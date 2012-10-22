@@ -126,9 +126,6 @@ CREATE TRIGGER historico_posts AFTER DELETE OR UPDATE
 ON posts FOR EACH ROW
 EXECUTE PROCEDURE make_historico();
 
-DROP TRIGGER historico_posts ON posts
-
-
 CREATE OR REPLACE FUNCTION make_historico()
 RETURNS trigger LANGUAGE plpgsql
 AS $$
@@ -137,12 +134,22 @@ begin
  return old;
  END; $$;
 
+
+DROP TRIGGER historico_posts ON posts
+
+insert into foo (name, age) VALUES ('huashu', 23) RETURNING age;
+
+
+ DROP TABLE log
+
  CREATE TABLE log
  (
 	log_id SERIAL PRIMARY KEY,
 	log_user_id INTEGER REFERENCES users(uid),
 	log_user_fname VARCHAR(60),
 	log_user_lname VARCHAR(60),
+	log_post_id INTEGER,
+	log_post_content TEXT,
 	log_post_data TIMESTAMP,
 	log_denovo boolean default false
  );
@@ -173,7 +180,9 @@ CREATE TABLE likes
 	like_data TIMESTAMP DEFAULT now()
 );
 
-SELECT * FROM posts WHERE 
+ALTER TABLE image_post ADD COLUMN size INTEGER;
+
+SELECT * FROM image_post
 
 CREATE TABLE image_post
 (
@@ -320,9 +329,20 @@ UPDATE log SET log_denovo = true WHERE post
 	 (
 SELECT DISTINCT case WHEN post_user_id=1 THEN 'me' ELSE 'other' END from posts where post_user_id = 1)  
 
+SELECT u.uid, u.ufname, u.ulname, p.post_data, (SELECT DISTINCT CASE WHEN log_user_id = u.uid THEN 'true' ELSE 'false' END from log LIMIT 1)
+	FROM posts p JOIN users u 
+	ON p.post_user_id = u.uid 
+	AND p.post_content LIKE '%bijuzinho%' 
+	AND p.post_data > '2012-01-01' 
+	AND p.post_data < '2012-12-12'
 
+SELECT uid, (SELECT CASE WHEN (SELECT COUNT(*) FROM log WHERE log_user_id = uid) > 0 THEN 'true' ELSE 'false' END) from users;
 
+SELECT * from posts
 
+SELECT * FROM users u JOIN (SELECT p.post_content, p.post_user_id, CASE WHEN post_user_id = 1 THEN 'true' ELSE 'false' END from posts p) j ON u.uid = j.post_user_id;	
+
+SELECT * FROM posts p join users u ON p.post_user_id = u.uid
 
 SELECT * from posts where post_content like '%prof%'
 
@@ -333,7 +353,35 @@ select procurar('%prof%');
 DROP FUNCTION procurar(TEXT)
 
 CREATE OR REPLACE FUNCTION procurar(word TEXT)
-RETURNS 
+RETURNS void AS $$
 SELECT * FROM posts WHERE post_content LIKE $1;
 $$ LANGUAGE SQL;
 
+CREATE OR REPLACE FUNCTION offensive(word TEXT, inicio TIMESTAMP, fim TIMESTAMP)
+RETURNS void AS $$
+INSERT INTO log (log_user_id, log_user_fname, log_user_lname, log_post_id, log_post_content, log_post_data, log_denovo) (
+SELECT u.uid, u.ufname, u.ulname, p.post_id, p.post_content, p.post_data, (SELECT CASE WHEN (SELECT COUNT(*) FROM log WHERE log_user_id = uid) > 0 THEN 'true'::boolean ELSE 'false'::boolean END)
+	FROM posts p JOIN users u 
+	ON p.post_user_id = u.uid 
+	AND p.post_content LIKE '%' || $1 || '%'
+	AND p.post_data > $2 
+	AND p.post_data < $3
+);
+$$ LANGUAGE SQL;
+
+
+SELECT offensive('prof', '2012-01-01', '2012-12-12')
+
+DROP FUNCTION offensive(TEXT,TIMESTAMP,TIMESTAMP)
+CREATE TABLE log
+ (
+	log_id SERIAL PRIMARY KEY,
+	log_user_id INTEGER REFERENCES users(uid),
+	log_user_fname VARCHAR(60),
+	log_user_lname VARCHAR(60),
+	log_post_id INTEGER,
+	log_post_content TEXT,
+	log_post_data TIMESTAMP,
+	log_denovo boolean default false NOT NULL
+ );
+DROP table log

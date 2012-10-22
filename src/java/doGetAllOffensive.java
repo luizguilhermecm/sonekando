@@ -2,24 +2,25 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package images;
 
+import estatistica.estatisticaDao;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author snk
  */
-public class doDownloadProfileImage extends HttpServlet {
+public class doGetAllOffensive extends HttpServlet {
 
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -33,7 +34,12 @@ public class doDownloadProfileImage extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            
+                estatisticaDao _estatisticaDao = new estatisticaDao();
+                ResultSet _offensive = _estatisticaDao.getAllOffensiveContent();
+                
+                request.setAttribute("ResultSet", _offensive);
+                RequestDispatcher rd = request.getRequestDispatcher("offensiveContent.jsp");
+                rd.forward(request,response);
         } finally {            
             out.close();
         }
@@ -50,25 +56,11 @@ public class doDownloadProfileImage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try 
-        {
-            byte[] imagem;
-            HttpSession session = request.getSession();
-            ImageDao imagemDAO = new ImageDao();
-            String queryString = request.getQueryString();
-            // TODO: enviar doPublicProfile?id=3 .. tentar pegar pela variavel
-            int _uid = Integer.parseInt(queryString);
-            
-            imagem = imagemDAO.getImageUserProfile(_uid);
-            
-            response.setContentType("image/jpeg");
-            response.getOutputStream().write(imagem);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(doGetAllOffensive.class.getName()).log(Level.SEVERE, null, ex);
         }
-        catch (Exception ex)
-        {
-            Logger.getLogger(doDownloadProfileImage.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
     }
 
     /** 
@@ -84,7 +76,7 @@ public class doDownloadProfileImage extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(doDownloadProfileImage.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(doGetAllOffensive.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

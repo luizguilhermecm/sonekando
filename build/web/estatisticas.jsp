@@ -14,9 +14,12 @@
 <%@page import="java.util.Enumeration"%>
 <%@page import="java.sql.*" %>
 
-<%-- FIX: Se usuário não estiver logado redirecionar para index. Ainda não sei como fazer --%>
-<%-- TODO: ver como alguem fez para verificar se sessão é invalida e adaptar aqui --%>
-<% int user_id = Integer.parseInt(session.getAttribute("user_id").toString());%>
+<% int user_id = 0;
+    if (session.getAttribute("user_id") == null) {
+        response.sendRedirect("index.jsp");
+    } else {
+        user_id = Integer.parseInt(session.getAttribute("user_id").toString());
+    }%>
 <% UserDao _user = new UserDao();%>
 <% FriendDao _friendDao = new FriendDao();%>
 
@@ -26,6 +29,8 @@
         <title>Estatisticas</title>
     </head>
     <body>
+        <p style="text-align: right"><a href="profile.jsp"> Minha Cama </a></p>
+
         <h1>Estatísticas</h1>
         <h2>Por seu sono em risco</h2>
         <form name=input method=post action=doEstatistica>
@@ -140,26 +145,26 @@
 
             <select name="ateAno">
                 <option value="2011">2011</option>
-                <option value="2012">2012</option>
-                <option value="2013"selected>2013</option>
+                <option value="2012" selected>2012</option>
+                <option value="2013">2013</option>
             </select>
             <br>
             <select name="amigo">
                 <option value="0" selected>nenhum</option>
-        <%
-            ResultSet _fresult = _friendDao.getAmigosDao(user_id);
-            int _ffriend_id;
-            while (_fresult.next()) {
-                _ffriend_id = _fresult.getInt("ffriend_id");
-                
-                out.println("<option value=" + _ffriend_id + "> "
-                     + _user.getNomeCompletoDao(_ffriend_id) + "</option>" + "<br>");
-            }
-        %>           </select>
+                <%
+                    ResultSet _fresult = _friendDao.getAmigosDao(user_id);
+                    int _ffriend_id;
+                    while (_fresult.next()) {
+                        _ffriend_id = _fresult.getInt("ffriend_id");
+
+                        out.println("<option value=" + _ffriend_id + "> "
+                                + _user.getNomeCompletoDao(_ffriend_id) + "</option>" + "<br>");
+                    }
+                %>           </select>
             <br>
             <input type=submit value=Gerar>
         </form>
- 
+
 
 
 

@@ -1,39 +1,29 @@
 <%-- 
-    Document   : estatisticas
-    Created on : 12/10/2012, 16:59:26
+    Document   : offensiveContent
+    Created on : 20/10/2012, 20:05:43
     Author     : snk
 --%>
 
+<%@page import="java.sql.ResultSet"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-
-<%@page language="java" %>
-<%@page import="users.*" %>
-<%@page import="posts.PostDao"%>
-<%@page import="friends.FriendDao"%>
-<%@page import="java.util.Enumeration"%>
-<%@page import="java.sql.*" %>
-
 <% int user_id = 0;
     if (session.getAttribute("user_id") == null) {
         response.sendRedirect("index.jsp");
     } else {
         user_id = Integer.parseInt(session.getAttribute("user_id").toString());
     }%>
-<% UserDao _user = new UserDao();%>
-<% FriendDao _friendDao = new FriendDao();%>
-
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Estatisticas</title>
+        <title>Conteúdo Ofensivo</title>
     </head>
     <body>
         <p style="text-align: right"><a href="profile.jsp"> Minha Cama </a></p>
 
-        <h1>Estatísticas</h1>
-        <h2>Por seu sono em risco</h2>
-        <form name=input method=post action=doEstatistica>
+        <h1>Conteúdo Ofensivo você só encontra aqui e no Facebook :)</h1>
+
+        <form name=input method=post action=doOffensive>
             De:
 
             <select name="deDia">
@@ -145,28 +135,48 @@
 
             <select name="ateAno">
                 <option value="2011">2011</option>
-                <option value="2012" selected>2012</option>
+                <option value="2012"selected>2012</option>
                 <option value="2013">2013</option>
             </select>
             <br>
-            <select name="amigo">
-                <option value="0" selected>nenhum</option>
-                <%
-                    ResultSet _fresult = _friendDao.getAmigosDao(user_id);
-                    int _ffriend_id;
-                    while (_fresult.next()) {
-                        _ffriend_id = _fresult.getInt("ffriend_id");
+            <input type="text" name="offensiveWord" size="30" />
 
-                        out.println("<option value=" + _ffriend_id + "> "
-                                + _user.getNomeCompletoDao(_ffriend_id) + "</option>" + "<br>");
-                    }
-                %>           </select>
-            <br>
             <input type=submit value=Gerar>
         </form>
+        
+        <form name=input method=post action=doGetAllOffensive>
+            <input type="submit" value="Todos os conteúdos ofensivos"></input>
+        </form>
+        
+        <%-- FIX: resultadoEstatistica.jsp quando nao seleciona nenhuma amigo --%>
+        
+        <table border="1">
+        <%
+            ResultSet _offensive = (ResultSet) request.getAttribute("ResultSet");
 
-
-
-
+            if (_offensive == null) {
+                out.println("Seu Lindo :)");
+            } else {
+                 out.println("<tr>");
+                 out.println("<th>" + "Nome do Usuário" + "</th>");
+                 out.println("<th>" + "Sobrenome do Usuário" + "</th>");
+                 out.println("<th>" + "Conteudo do Post" + "</th>");
+                 out.println("<th>" + "Data do Post" + "</th>");
+                 out.println("<th>" + "Reincidente" + "</th>");
+                 out.println("</tr>");
+                 while (_offensive.next()){
+                     out.println("<tr>");
+                     out.println("<td>" + _offensive.getString("log_user_fname") + "</td>");
+                     out.println("<td>" + _offensive.getString("log_user_lname") + "</td>");
+                     out.println("<td>" + _offensive.getString("log_post_content") + "</td>");
+                     out.println("<td>" + _offensive.getDate("log_post_data") + "</td>");
+                     out.println("<td>" + _offensive.getBoolean("log_denovo") + "</td>");
+                     out.println("</tr>");
+                 }
+                
+                
+            }
+        %>
+        </table>
     </body>
 </html>
